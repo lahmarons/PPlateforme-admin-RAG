@@ -3,6 +3,7 @@
   <PropertyGroup>
     <RootNamespace>IdaraTech.Infrastructure</RootNamespace>
     <AssemblyName>IdaraTech.Infrastructure</AssemblyName>
+    <NoWarn>$(NoWarn);NU1903</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

@@ -3,6 +3,7 @@
   <PropertyGroup>
     <RootNamespace>IdaraTech.Application</RootNamespace>
     <AssemblyName>IdaraTech.Application</AssemblyName>
+    <NoWarn>$(NoWarn);NU1903</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +19,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Demandes\Commands\UpdateDemande\" />
   </ItemGroup>
 
 </Project>
