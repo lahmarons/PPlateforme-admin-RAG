@@ -1,7 +1,15 @@
-<h1>Counter</h1>
+<div class="grid">
+  <div class="col-12 md:col-8 lg:col-6">
+    <p-card>
+      <ng-template pTemplate="title">Counter</ng-template>
+      <ng-template pTemplate="subtitle">PrimeNG themed component example</ng-template>
 
-<p>This is a simple example of an Angular component.</p>
+      <div class="flex align-items-center justify-content-between mb-4">
+        <span class="text-color-secondary">Current count</span>
+        <p-tag [value]="currentCount.toString()" severity="info"></p-tag>
+      </div>
 
-<p aria-live="polite">Current count: <strong>{{ currentCount }}</strong></p>
-
-<button class="btn btn-primary" (click)="incrementCounter()">Increment</button>
+      <button pButton type="button" icon="pi pi-plus" label="Increment" (click)="incrementCounter()"></button>
+    </p-card>
+  </div>
+</div>

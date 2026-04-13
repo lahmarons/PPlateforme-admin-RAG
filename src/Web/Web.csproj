@@ -45,6 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\src\app\todo\" />
     <Folder Include="Controllers\" />
   </ItemGroup>
 

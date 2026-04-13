@@ -1,7 +1,15 @@
-import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { enableProdMode, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideRouter } from '@angular/router';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'; // New
+import { providePrimeNG } from 'primeng/config'; // New
+import Aura from '@primeuix/themes/aura'; // New
+import { ModalModule } from 'ngx-bootstrap/modal';
 
-import { AppModule } from './app/app.module';
+import { AppComponent } from './app/app.component';
+import { routes } from './app/app.routes';
+import { AuthorizeInterceptor } from './api-authorization/authorize.interceptor';
 import { environment } from './environments/environment';
 
 export function getBaseUrl() {
@@ -9,12 +17,29 @@ export function getBaseUrl() {
 }
 
 const providers = [
-  { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] }
+  { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] },
+  { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
+  provideRouter(routes),
+  provideHttpClient(withInterceptorsFromDi()),
+  provideAnimationsAsync(), // Replaces BrowserAnimationsModule for better performance
+  providePrimeNG({ 
+    theme: {
+      preset: Aura,
+      options: {
+        darkModeSelector: '.app-dark'
+      }
+    }
+  }),
+  importProvidersFrom(ModalModule)
 ];
 
 if (environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic(providers).bootstrapModule(AppModule)
-  .catch(err => console.log(err));
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    ...providers
+  ]
+}).catch(err => console.log(err));

@@ -12,8 +12,17 @@ public class LookupDto
     {
         public Mapping()
         {
-            CreateMap<TodoList, LookupDto>();
-            CreateMap<TodoItem, LookupDto>();
+            CreateMap<Service, LookupDto>()
+                .ForMember(d => d.Title, opt => opt.MapFrom(s => s.Nom));
+
+            CreateMap<Utilisateur, LookupDto>()
+                .ForMember(d => d.Title, opt => opt.MapFrom(s => s.Nom));
+
+            CreateMap<Demande, LookupDto>()
+                .ForMember(d => d.Title, opt => opt.MapFrom(s => s.Description));
+
+            CreateMap<Document, LookupDto>()
+                .ForMember(d => d.Title, opt => opt.MapFrom(s => s.Nom));
         }
     }
 }
