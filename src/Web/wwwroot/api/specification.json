@@ -6,6 +6,123 @@
     "version": "1.0.0"
   },
   "paths": {
+    "/api/Admins": {
+      "get": {
+        "tags": [
+          "Admins"
+        ],
+        "operationId": "GetAdmins",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AdminDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Admins"
+        ],
+        "operationId": "CreateAdmin",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAdminCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Admins/{id}": {
+      "put": {
+        "tags": [
+          "Admins"
+        ],
+        "operationId": "UpdateAdmin",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAdminCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Admins"
+        ],
+        "operationId": "DeleteAdmin",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/Agents": {
       "get": {
         "tags": [
@@ -56,6 +173,69 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/Agents/{id}": {
+      "put": {
+        "tags": [
+          "Agents"
+        ],
+        "operationId": "UpdateAgent",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAgentCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Agents"
+        ],
+        "operationId": "DeleteAgent",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
           }
         }
       }
@@ -114,6 +294,69 @@
         }
       }
     },
+    "/api/Citoyens/{id}": {
+      "put": {
+        "tags": [
+          "Citoyens"
+        ],
+        "operationId": "UpdateCitoyen",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCitoyenCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Citoyens"
+        ],
+        "operationId": "DeleteCitoyen",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/Demandes/{id}": {
       "get": {
         "tags": [
@@ -142,6 +385,67 @@
                 }
               }
             }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Demandes"
+        ],
+        "operationId": "UpdateDemande",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDemandeCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Demandes"
+        ],
+        "operationId": "DeleteDemande",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
           }
         }
       }
@@ -216,6 +520,123 @@
         }
       }
     },
+    "/api/Documents": {
+      "get": {
+        "tags": [
+          "Documents"
+        ],
+        "operationId": "GetDocuments",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DocumentDto2"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Documents"
+        ],
+        "operationId": "CreateDocument",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDocumentCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Documents/{id}": {
+      "put": {
+        "tags": [
+          "Documents"
+        ],
+        "operationId": "UpdateDocument",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDocumentCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Documents"
+        ],
+        "operationId": "DeleteDocument",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/Services": {
       "get": {
         "tags": [
@@ -270,95 +691,12 @@
         }
       }
     },
-    "/api/TodoItems": {
-      "get": {
-        "tags": [
-          "TodoItems"
-        ],
-        "operationId": "GetTodoItemsWithPagination",
-        "parameters": [
-          {
-            "name": "ListId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          },
-          {
-            "name": "PageNumber",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 2
-          },
-          {
-            "name": "PageSize",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 3
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaginatedListOfTodoItemBriefDto"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "TodoItems"
-        ],
-        "operationId": "CreateTodoItem",
-        "requestBody": {
-          "x-name": "command",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateTodoItemCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "integer",
-                  "format": "int32"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/TodoItems/{id}": {
+    "/api/Services/{id}": {
       "put": {
         "tags": [
-          "TodoItems"
+          "Services"
         ],
-        "operationId": "UpdateTodoItem",
+        "operationId": "UpdateService",
         "parameters": [
           {
             "name": "id",
@@ -376,7 +714,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateTodoItemCommand"
+                "$ref": "#/components/schemas/UpdateServiceCommand"
               }
             }
           },
@@ -394,163 +732,9 @@
       },
       "delete": {
         "tags": [
-          "TodoItems"
+          "Services"
         ],
-        "operationId": "DeleteTodoItem",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/api/TodoItems/UpdateDetail/{id}": {
-      "put": {
-        "tags": [
-          "TodoItems"
-        ],
-        "operationId": "UpdateTodoItemDetail",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "requestBody": {
-          "x-name": "command",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateTodoItemDetailCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
-        "responses": {
-          "204": {
-            "description": ""
-          },
-          "400": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/api/TodoLists": {
-      "get": {
-        "tags": [
-          "TodoLists"
-        ],
-        "operationId": "GetTodoLists",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TodosVm"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "TodoLists"
-        ],
-        "operationId": "CreateTodoList",
-        "requestBody": {
-          "x-name": "command",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateTodoListCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "integer",
-                  "format": "int32"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/TodoLists/{id}": {
-      "put": {
-        "tags": [
-          "TodoLists"
-        ],
-        "operationId": "UpdateTodoList",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "requestBody": {
-          "x-name": "command",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateTodoListCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
-        "responses": {
-          "204": {
-            "description": ""
-          },
-          "400": {
-            "description": ""
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "TodoLists"
-        ],
-        "operationId": "DeleteTodoList",
+        "operationId": "DeleteService",
         "parameters": [
           {
             "name": "id",
@@ -596,6 +780,56 @@
   },
   "components": {
     "schemas": {
+      "AdminDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nom": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateAdminCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "nom": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "motDePasse": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdateAdminCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nom": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "motDePasse": {
+            "type": "string"
+          }
+        }
+      },
       "AgentDto": {
         "type": "object",
         "additionalProperties": false,
@@ -650,6 +884,36 @@
           }
         }
       },
+      "UpdateAgentCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nom": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "motDePasse": {
+            "type": "string"
+          },
+          "matricule": {
+            "type": "string"
+          },
+          "grade": {
+            "type": "string"
+          },
+          "serviceId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
       "CitoyenDto": {
         "type": "object",
         "additionalProperties": false,
@@ -676,6 +940,31 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "nom": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "motDePasse": {
+            "type": "string"
+          },
+          "adresse": {
+            "type": "string"
+          },
+          "telephone": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdateCitoyenCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
           "nom": {
             "type": "string"
           },
@@ -778,15 +1067,28 @@
           }
         }
       },
-      "ChangeDemandeStatusCommand": {
+      "UpdateDemandeCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "demandeId": {
+          "id": {
             "type": "integer",
             "format": "int32"
           },
-          "newStatus": {
+          "description": {
+            "type": "string"
+          },
+          "serviceId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "agentId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "statut": {
             "$ref": "#/components/schemas/Statut"
           }
         }
@@ -806,6 +1108,75 @@
           2,
           3
         ]
+      },
+      "ChangeDemandeStatusCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "demandeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "newStatus": {
+            "$ref": "#/components/schemas/Statut"
+          }
+        }
+      },
+      "DocumentDto2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nom": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "demandeId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "CreateDocumentCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "nom": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "demandeId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "UpdateDocumentCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nom": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "demandeId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
       },
       "ServiceDto": {
         "type": "object",
@@ -835,37 +1206,7 @@
           }
         }
       },
-      "PaginatedListOfTodoItemBriefDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TodoItemBriefDto"
-            }
-          },
-          "pageNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "hasPreviousPage": {
-            "type": "boolean"
-          },
-          "hasNextPage": {
-            "type": "boolean"
-          }
-        }
-      },
-      "TodoItemBriefDto": {
+      "UpdateServiceCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -873,193 +1214,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "listId": {
-            "type": "integer",
-            "format": "int32"
+          "nom": {
+            "type": "string"
           },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "done": {
-            "type": "boolean"
-          }
-        }
-      },
-      "CreateTodoItemCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "listId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "UpdateTodoItemCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "done": {
-            "type": "boolean"
-          }
-        }
-      },
-      "UpdateTodoItemDetailCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "listId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "priority": {
-            "$ref": "#/components/schemas/PriorityLevel"
-          },
-          "note": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "PriorityLevel": {
-        "type": "integer",
-        "description": "",
-        "x-enumNames": [
-          "None",
-          "Low",
-          "Medium",
-          "High"
-        ],
-        "enum": [
-          0,
-          1,
-          2,
-          3
-        ]
-      },
-      "TodosVm": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "priorityLevels": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LookupDto"
-            }
-          },
-          "lists": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TodoListDto"
-            }
-          }
-        }
-      },
-      "LookupDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "TodoListDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "colour": {
-            "type": "string",
-            "nullable": true
-          },
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TodoItemDto"
-            }
-          }
-        }
-      },
-      "TodoItemDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "listId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "done": {
-            "type": "boolean"
-          },
-          "priority": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "note": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "CreateTodoListCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "title": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "UpdateTodoListCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
+          "description": {
+            "type": "string"
           }
         }
       },

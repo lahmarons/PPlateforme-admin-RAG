@@ -1,9 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using AutoMapper;
 using IdaraTech.Application.Common.Interfaces;
-using IdaraTech.Application.Common.Models;
-using IdaraTech.Application.TodoItems.Queries.GetTodoItemsWithPagination;
-using IdaraTech.Application.TodoLists.Queries.GetTodos;
+using IdaraTech.Application.Demandes.Queries.GetDemandById;
 using IdaraTech.Domain.Entities;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
@@ -36,11 +34,8 @@ public class MappingTests
     }
 
     [Test]
-    [TestCase(typeof(TodoList), typeof(TodoListDto))]
-    [TestCase(typeof(TodoItem), typeof(TodoItemDto))]
-    [TestCase(typeof(TodoList), typeof(LookupDto))]
-    [TestCase(typeof(TodoItem), typeof(LookupDto))]
-    [TestCase(typeof(TodoItem), typeof(TodoItemBriefDto))]
+    [TestCase(typeof(Demande), typeof(DemandeDto))]
+    [TestCase(typeof(Document), typeof(DocumentDto))]
     public void ShouldSupportMappingFromSourceToDestination(Type source, Type destination)
     {
         var instance = GetInstanceOf(source);
