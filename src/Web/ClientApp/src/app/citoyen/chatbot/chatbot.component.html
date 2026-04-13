@@ -1,0 +1,25 @@
+<div class="grid grid-cols-12 gap-6">
+  <div class="col-span-12 lg:col-span-9 xl:col-span-7">
+    <div class="card">
+      <div class="flex flex-column gap-1 mb-4">
+        <h5 class="m-0">Chatbot citoyen</h5>
+        <p class="m-0 text-color-secondary">Aide rapide pour vos services et demandes</p>
+      </div>
+
+      <div class="flex flex-column gap-2 mb-3 p-3 border border-surface rounded-border surface-ground" style="max-height: 24rem; overflow: auto;">
+        @for (message of messages; track $index) {
+        <div class="flex" [ngClass]="{ 'justify-content-end': message.from === 'user' }">
+          <p-tag [value]="message.text" [severity]="message.from === 'user' ? 'info' : 'secondary'"></p-tag>
+        </div>
+        }
+      </div>
+
+      <div class="flex flex-column gap-2">
+        <textarea pInputTextarea rows="3" [(ngModel)]="question" placeholder="Posez votre question..."></textarea>
+        <div class="flex justify-content-end">
+          <button pButton type="button" icon="pi pi-send" label="Envoyer" (click)="send()"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

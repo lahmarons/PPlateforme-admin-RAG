@@ -23,6 +23,12 @@ else
 
 app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
+
+app.UseOpenApi(settings =>
+{
+    settings.Path = "/api/specification.json";
+});
+
 app.UseStaticFiles();
 
 app.UseSwaggerUi(settings =>

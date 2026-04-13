@@ -10,6 +10,7 @@ public record CreateAgentCommand : IRequest<int>
     public string MotDePasse { get; init; } = string.Empty;
     public string Matricule { get; init; } = string.Empty;
     public string Grade { get; init; } = string.Empty;
+    public bool IsActive { get; init; } = true;
     public int ServiceId { get; init; }
 }
 
@@ -31,6 +32,7 @@ public class CreateAgentCommandHandler : IRequestHandler<CreateAgentCommand, int
             MotDePasse = request.MotDePasse,
             Matricule = request.Matricule,
             Grade = request.Grade,
+            IsActive = request.IsActive,
             ServiceId = request.ServiceId
         };
 

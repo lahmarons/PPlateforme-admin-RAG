@@ -1,4 +1,5 @@
 using IdaraTech.Application.Common.Interfaces;
+using IdaraTech.Application.Common.Exceptions;
 using IdaraTech.Domain.Entities;
 using IdaraTech.Domain.Events;
 using IdaraTech.Domain.Enums;
@@ -26,7 +27,10 @@ public class ChangeDemandeStatusCommandHandler : IRequestHandler<ChangeDemandeSt
         var entity = await _context.Demandes
             .FindAsync(new object[] { request.DemandeId }, cancellationToken: cancellationToken);
 
-        Guard.Against.Null(entity, nameof(entity), "Demande not found");
+        if (entity is null)
+        {
+            throw new IdaraTech.Application.Common.Exceptions.NotFoundException(nameof(Demande), request.DemandeId);
+        }
 
         var previousStatus = entity.Statut;
         entity.ChangerStatut(request.NewStatus);

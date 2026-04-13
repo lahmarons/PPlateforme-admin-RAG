@@ -22,7 +22,8 @@ public class GetServicesQueryHandler : IRequestHandler<GetServicesQuery, List<Se
             {
                 Id = s.Id,
                 Nom = s.Nom,
-                Description = s.Description
+                Description = s.Description,
+                //IsActive = s.IsActive
             })
             .ToListAsync(cancellationToken);
     }

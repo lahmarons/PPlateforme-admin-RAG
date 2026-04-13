@@ -6,6 +6,8 @@ public class Agent : Utilisateur
 
     public string Grade { get; set; } = string.Empty;
 
+    public bool IsActive { get; set; } = true;
+
     public int? ServiceId { get; set; }
 
     public Service? Service { get; set; }

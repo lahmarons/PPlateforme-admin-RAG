@@ -1,28 +1,39 @@
-<h1 id="tableLabel">Weather forecast</h1>
+<div class="grid grid-cols-12 gap-6">
+  <div class="col-span-12">
+    <div class="card">
+      <div class="flex flex-column gap-1 mb-4">
+        <h5 class="m-0">Weather Forecast</h5>
+        <p class="m-0 text-color-secondary">Data loaded from the backend API</p>
+      </div>
 
-<p>This component demonstrates fetching data from the server.</p>
-@if (!forecasts?.length) {
-<p><em>Loading...</em></p>
-}
-@else{
-<table class='table table-striped' aria-labelledby="tableLabel">
-  <thead>
-    <tr>
-      <th>Date</th>
-      <th>Temp. (C)</th>
-      <th>Temp. (F)</th>
-      <th>Summary</th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (forecast of forecasts; track $index) {
-    <tr>
-      <td>{{ forecast.date | date }}</td>
-      <td>{{ forecast.temperatureC }}</td>
-      <td>{{ forecast.temperatureF }}</td>
-      <td>{{ forecast.summary }}</td>
-    </tr>
-    }
-  </tbody>
-</table>
-}
+      @if (!forecasts?.length) {
+      <div class="flex align-items-center gap-3 py-4">
+        <p-progressSpinner strokeWidth="4" styleClass="w-2rem h-2rem"></p-progressSpinner>
+        <span class="text-color-secondary">Loading forecasts...</span>
+      </div>
+      }
+      @else {
+      <p-table [value]="forecasts" [tableStyle]="{ 'min-width': '50rem' }" [stripedRows]="true" [paginator]="true" [rows]="10" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Date</th>
+            <th>Temp. (C)</th>
+            <th>Temp. (F)</th>
+            <th>Summary</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-forecast>
+          <tr>
+            <td>{{ forecast.date | date: 'mediumDate' }}</td>
+            <td>{{ forecast.temperatureC }}</td>
+            <td>{{ forecast.temperatureF }}</td>
+            <td>
+              <p-tag [value]="forecast.summary || 'N/A'" severity="secondary"></p-tag>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="grid grid-cols-12 gap-6">
+  <div class="col-span-12">
+    <div class="card">
+      <div class="flex flex-column gap-1 mb-4">
+        <h5 class="m-0">Mes demandes</h5>
+        <p class="m-0 text-color-secondary">Historique et statut des demandes citoyen</p>
+      </div>
+
+      <div class="flex justify-content-end mb-3">
+        <a pButton routerLink="/citoyen/demandes/nouvelle" icon="pi pi-plus" label="Nouvelle demande"></a>
+      </div>
+
+      <p-message *ngIf="errorMessage" severity="error" [text]="errorMessage"></p-message>
+
+      @if (!loading && !demandes.length && !errorMessage) {
+      <p-message severity="info" text="Aucune demande pour le moment."></p-message>
+      }
+
+      @if (demandes.length) {
+      <p-table [value]="demandes" [paginator]="true" [rows]="10" [stripedRows]="true" responsiveLayout="scroll" styleClass="p-datatable-sm">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID</th>
+            <th>Service</th>
+            <th>Description</th>
+            <th>Statut</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-demande>
+          <tr>
+            <td>#{{ demande.id }}</td>
+            <td>{{ demande.serviceNom || '-' }}</td>
+            <td>{{ demande.description }}</td>
+            <td><p-tag [value]="demande.statutName || 'Inconnu'" severity="secondary"></p-tag></td>
+          </tr>
+        </ng-template>
+      </p-table>
+      }
+    </div>
+  </div>
+</div>

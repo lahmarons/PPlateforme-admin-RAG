@@ -16,6 +16,9 @@ public class AgentConfiguration : IEntityTypeConfiguration<Agent>
             .HasMaxLength(100)
             .IsRequired();
 
+        builder.Property(e => e.IsActive)
+            .IsRequired();
+
         builder.HasOne(e => e.Service)
             .WithMany(s => s.Agents)
             .HasForeignKey(e => e.ServiceId)

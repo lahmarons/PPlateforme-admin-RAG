@@ -1,0 +1,45 @@
+<div class="grid grid-cols-12 gap-6">
+  <div class="col-span-12 lg:col-span-8 xl:col-span-6">
+    <div class="card">
+      <div class="flex flex-column gap-1 mb-4">
+        <h5 class="m-0">Inscription citoyen</h5>
+        <p class="m-0 text-color-secondary">Créer un compte citoyen</p>
+      </div>
+
+      <form class="flex flex-column gap-3" [formGroup]="form" (ngSubmit)="submit()">
+        <div class="flex flex-column gap-1">
+          <label for="nom">Nom</label>
+          <input id="nom" pInputText formControlName="nom" />
+        </div>
+
+        <div class="flex flex-column gap-1">
+          <label for="email">Email</label>
+          <input id="email" pInputText formControlName="email" />
+        </div>
+
+        <div class="flex flex-column gap-1">
+          <label for="motDePasse">Mot de passe</label>
+          <p-password id="motDePasse" formControlName="motDePasse" [feedback]="false" [toggleMask]="true"></p-password>
+        </div>
+
+        <div class="flex flex-column gap-1">
+          <label for="adresse">Adresse</label>
+          <input id="adresse" pInputText formControlName="adresse" />
+        </div>
+
+        <div class="flex flex-column gap-1">
+          <label for="telephone">Téléphone</label>
+          <input id="telephone" pInputText formControlName="telephone" />
+        </div>
+
+        <p-message *ngIf="errorMessage" severity="error" [text]="errorMessage"></p-message>
+        <p-message *ngIf="successMessage" severity="success" [text]="successMessage"></p-message>
+
+        <div class="flex gap-2">
+          <button pButton type="submit" label="S'inscrire" icon="pi pi-user-plus" [loading]="submitting"></button>
+          <a pButton routerLink="/citoyen/connexion" severity="secondary" label="Se connecter"></a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

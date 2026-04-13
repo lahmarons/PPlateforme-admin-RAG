@@ -22,7 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Demandes\Commands\UpdateDemande\" />
+    <Folder Include="TodoItems\Commands\CreateTodoItem\" />
+    <Folder Include="TodoLists\Queries\GetTodos\" />
   </ItemGroup>
 
 </Project>

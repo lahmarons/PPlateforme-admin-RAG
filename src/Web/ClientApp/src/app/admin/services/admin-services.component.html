@@ -1,0 +1,62 @@
+<div class="grid grid-cols-12 gap-6">
+  <div class="col-span-12">
+    <div class="card">
+      <div class="flex flex-column gap-1 mb-4">
+        <h5 class="m-0">Gestion des services</h5>
+        <p class="m-0 text-color-secondary">Créer, modifier, supprimer et activer/désactiver</p>
+      </div>
+
+      <div class="flex justify-content-end mb-3">
+        <button pButton icon="pi pi-plus" label="Nouveau service" (click)="openCreate()"></button>
+      </div>
+
+      <p-message *ngIf="errorMessage" severity="error" [text]="errorMessage"></p-message>
+
+      <p-table [value]="services" [loading]="loading" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Nom</th>
+            <th>Description</th>
+            <th>Statut</th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-service>
+          <tr>
+            <td>{{ service.nom }}</td>
+            <td>{{ service.description }}</td>
+            <td>
+              <p-tag [value]="service.isActive === false ? 'Désactivé' : 'Actif'" [severity]="service.isActive === false ? 'danger' : 'success'"></p-tag>
+            </td>
+            <td class="flex gap-2 justify-content-end">
+              <button pButton type="button" icon="pi pi-pencil" label="Modifier" severity="secondary" (click)="openEdit(service)"></button>
+              <button pButton type="button" [icon]="service.isActive === false ? 'pi pi-check' : 'pi pi-ban'" [label]="service.isActive === false ? 'Activer' : 'Désactiver'" severity="warn" (click)="toggleActive(service)"></button>
+              <button pButton type="button" icon="pi pi-trash" label="Supprimer" severity="danger" (click)="delete(service)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+      <p-dialog [(visible)]="dialogVisible" [modal]="true" [style]="{ width: '40rem' }" [header]="editingService ? 'Modifier le service' : 'Nouveau service'">
+        <form class="flex flex-column gap-3" [formGroup]="form" (ngSubmit)="save()">
+          <div class="flex flex-column gap-1">
+            <label for="nom">Nom</label>
+            <input id="nom" pInputText formControlName="nom" />
+          </div>
+          <div class="flex flex-column gap-1">
+            <label for="description">Description</label>
+            <textarea id="description" rows="4" class="p-inputtext w-full" formControlName="description"></textarea>
+          </div>
+          <div class="flex flex-column gap-1">
+            <label for="isActive">Statut</label>
+            <p-select id="isActive" [options]="statusOptions" optionLabel="label" optionValue="value" formControlName="isActive" placeholder="Sélectionner"></p-select>
+          </div>
+          <div class="flex justify-content-end gap-2">
+            <button pButton type="button" severity="secondary" label="Annuler" (click)="dialogVisible = false"></button>
+            <button pButton type="submit" label="Enregistrer"></button>
+          </div>
+        </form>
+      </p-dialog>
+    </div>
+  </div>
+</div>

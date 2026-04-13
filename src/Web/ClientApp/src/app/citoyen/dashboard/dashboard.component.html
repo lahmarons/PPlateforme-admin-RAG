@@ -1,0 +1,24 @@
+<div class="grid grid-cols-12 gap-6">
+  <div class="col-span-12">
+    <div class="card">
+      <div class="flex flex-column gap-1 mb-4">
+        <h5 class="m-0">Tableau de bord citoyen</h5>
+        <p class="m-0 text-color-secondary">Bienvenue {{ session.citoyen()?.nom || 'citoyen' }}</p>
+      </div>
+
+      <p-message *ngIf="!session.isConnected()" severity="warn" text="Vous n'êtes pas connecté. Certaines actions peuvent être limitées."></p-message>
+
+      <div class="grid grid-cols-12 gap-4 mt-3">
+        <div class="col-span-12 md:col-span-4">
+          <a pButton class="w-full" routerLink="/citoyen/services" label="Services" icon="pi pi-briefcase"></a>
+        </div>
+        <div class="col-span-12 md:col-span-4">
+          <a pButton class="w-full" routerLink="/citoyen/demandes" label="Mes demandes" icon="pi pi-inbox" severity="secondary"></a>
+        </div>
+        <div class="col-span-12 md:col-span-4">
+          <a pButton class="w-full" routerLink="/citoyen/chatbot" label="Chatbot" icon="pi pi-comments" severity="contrast"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

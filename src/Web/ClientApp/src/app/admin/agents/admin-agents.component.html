@@ -1,0 +1,83 @@
+<div class="grid grid-cols-12 gap-6">
+  <div class="col-span-12">
+    <div class="card">
+      <div class="flex flex-column gap-1 mb-4">
+        <h5 class="m-0">Gestion des agents</h5>
+        <p class="m-0 text-color-secondary">Activation et affectation au service</p>
+      </div>
+
+      <div class="flex justify-content-end mb-3">
+        <button pButton icon="pi pi-plus" label="Nouvel agent" (click)="openCreate()"></button>
+      </div>
+
+      <p-message *ngIf="errorMessage" severity="error" [text]="errorMessage"></p-message>
+
+      <p-table [value]="agents" [loading]="loading" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Matricule</th>
+            <th>Grade</th>
+            <th>Service</th>
+            <th>Statut</th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-agent>
+          <tr>
+            <td>{{ agent.nom }}</td>
+            <td>{{ agent.email }}</td>
+            <td>{{ agent.matricule }}</td>
+            <td>{{ agent.grade }}</td>
+            <td>{{ agent.serviceNom || 'Aucun' }}</td>
+            <td>
+              <p-tag [value]="agent.isActive === false ? 'Désactivé' : 'Actif'" [severity]="agent.isActive === false ? 'danger' : 'success'"></p-tag>
+            </td>
+            <td class="flex gap-2 justify-content-end">
+              <button pButton type="button" icon="pi pi-pencil" label="Modifier" severity="secondary" (click)="openEdit(agent)"></button>
+              <button pButton type="button" [icon]="agent.isActive === false ? 'pi pi-check' : 'pi pi-ban'" [label]="agent.isActive === false ? 'Activer' : 'Désactiver'" severity="warn" (click)="toggleActive(agent)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+      <p-dialog [(visible)]="dialogVisible" [modal]="true" [style]="{ width: '42rem' }" [header]="editingAgent ? 'Modifier l’agent' : 'Nouvel agent'">
+        <form class="grid grid-cols-12 gap-3" [formGroup]="form" (ngSubmit)="save()">
+          <div class="col-span-12 md:col-span-6 flex flex-column gap-1">
+            <label for="nom">Nom</label>
+            <input id="nom" pInputText formControlName="nom" />
+          </div>
+          <div class="col-span-12 md:col-span-6 flex flex-column gap-1">
+            <label for="email">Email</label>
+            <input id="email" pInputText formControlName="email" />
+          </div>
+          <div class="col-span-12 md:col-span-6 flex flex-column gap-1">
+            <label for="motDePasse">Mot de passe</label>
+            <input id="motDePasse" pInputText type="password" formControlName="motDePasse" />
+          </div>
+          <div class="col-span-12 md:col-span-6 flex flex-column gap-1">
+            <label for="matricule">Matricule</label>
+            <input id="matricule" pInputText formControlName="matricule" />
+          </div>
+          <div class="col-span-12 md:col-span-6 flex flex-column gap-1">
+            <label for="grade">Grade</label>
+            <input id="grade" pInputText formControlName="grade" />
+          </div>
+          <div class="col-span-12 md:col-span-6 flex flex-column gap-1">
+            <label for="serviceId">Service</label>
+            <p-select id="serviceId" [options]="services" optionLabel="nom" optionValue="id" formControlName="serviceId" placeholder="Affecter à un service"></p-select>
+          </div>
+          <div class="col-span-12 md:col-span-6 flex flex-column gap-1">
+            <label for="isActive">Statut du compte</label>
+            <p-select id="isActive" [options]="statusOptions" optionLabel="label" optionValue="value" formControlName="isActive" placeholder="Sélectionner"></p-select>
+          </div>
+          <div class="col-span-12 flex justify-content-end gap-2">
+            <button pButton type="button" severity="secondary" label="Annuler" (click)="dialogVisible = false"></button>
+            <button pButton type="submit" label="Enregistrer"></button>
+          </div>
+        </form>
+      </p-dialog>
+    </div>
+  </div>
+</div>

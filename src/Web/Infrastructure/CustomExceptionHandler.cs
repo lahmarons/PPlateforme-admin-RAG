@@ -1,6 +1,7 @@
 ﻿using IdaraTech.Application.Common.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using NotFoundAppException = IdaraTech.Application.Common.Exceptions.NotFoundException;
 
 namespace IdaraTech.Web.Infrastructure;
 
@@ -14,7 +15,7 @@ public class CustomExceptionHandler : IExceptionHandler
         _exceptionHandlers = new()
             {
                 { typeof(ValidationException), HandleValidationException },
-                { typeof(NotFoundException), HandleNotFoundException },
+                { typeof(NotFoundAppException), HandleNotFoundException },
                 { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
                 { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
             };
@@ -48,7 +49,7 @@ public class CustomExceptionHandler : IExceptionHandler
 
     private async Task HandleNotFoundException(HttpContext httpContext, Exception ex)
     {
-        var exception = (NotFoundException)ex;
+        var exception = (NotFoundAppException)ex;
 
         httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
 

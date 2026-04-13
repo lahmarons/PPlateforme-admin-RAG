@@ -7,6 +7,7 @@ public record CreateServiceCommand : IRequest<int>
 {
     public string Nom { get; init; } = string.Empty;
     public string Description { get; init; } = string.Empty;
+    public bool IsActive { get; init; } = true;
 }
 
 public class CreateServiceCommandHandler : IRequestHandler<CreateServiceCommand, int>
@@ -23,7 +24,8 @@ public class CreateServiceCommandHandler : IRequestHandler<CreateServiceCommand,
         var entity = new Service
         {
             Nom = request.Nom,
-            Description = request.Description
+            Description = request.Description,
+            IsActive = request.IsActive
         };
 
         _context.Services.Add(entity);

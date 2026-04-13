@@ -1,4 +1,5 @@
 using IdaraTech.Application.Common.Interfaces;
+using IdaraTech.Application.Common.Exceptions;
 using IdaraTech.Domain.Entities;
 
 namespace IdaraTech.Application.Demandes.Queries.GetDemandById;
@@ -28,7 +29,10 @@ public class GetDemandeByIdQueryHandler : IRequestHandler<GetDemandeByIdQuery, D
             .Include(x => x.Documents)
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
-        Guard.Against.Null(entity, nameof(entity), "Demande not found");
+        if (entity is null)
+        {
+            throw new IdaraTech.Application.Common.Exceptions.NotFoundException(nameof(Demande), request.Id);
+        }
 
         return _mapper.Map<DemandeDto>(entity);
     }

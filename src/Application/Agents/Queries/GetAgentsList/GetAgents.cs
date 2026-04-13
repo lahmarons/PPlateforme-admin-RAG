@@ -26,6 +26,7 @@ public class GetAgentsQueryHandler : IRequestHandler<GetAgentsQuery, List<AgentD
                 Email = a.Email,
                 Matricule = a.Matricule,
                 Grade = a.Grade,
+                IsActive = a.IsActive,
                 ServiceId = a.ServiceId ?? 0,
                 ServiceNom = a.Service != null ? a.Service.Nom : string.Empty
             })

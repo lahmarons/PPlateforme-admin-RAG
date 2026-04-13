@@ -17,6 +17,9 @@ public class ServiceConfiguration : IEntityTypeConfiguration<Service>
         builder.Property(e => e.Description)
             .HasMaxLength(1000);
 
+        builder.Property(e => e.IsActive)
+            .IsRequired();
+
         builder.HasMany(e => e.Agents)
             .WithOne(a => a.Service)
             .HasForeignKey(a => a.ServiceId)
