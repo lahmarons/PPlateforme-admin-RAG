@@ -20,6 +20,11 @@ public class ServiceConfiguration : IEntityTypeConfiguration<Service>
         builder.Property(e => e.IsActive)
             .IsRequired();
 
+        builder.HasOne(e => e.Prestataire)
+            .WithMany(p => p.Services)
+            .HasForeignKey(e => e.PrestataireId)
+            .OnDelete(DeleteBehavior.SetNull);
+
         builder.HasMany(e => e.Agents)
             .WithOne(a => a.Service)
             .HasForeignKey(a => a.ServiceId)

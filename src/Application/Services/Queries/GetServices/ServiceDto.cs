@@ -6,4 +6,6 @@ public class ServiceDto
     public string Nom { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public bool IsActive { get; set; }
+    public int? PrestataireId { get; set; }
+    public string PrestataireNom { get; set; } = string.Empty;
 }

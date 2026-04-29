@@ -17,6 +17,7 @@
           <tr>
             <th>Nom</th>
             <th>Description</th>
+            <th>Prestataire</th>
             <th>Statut</th>
             <th></th>
           </tr>
@@ -25,6 +26,7 @@
           <tr>
             <td>{{ service.nom }}</td>
             <td>{{ service.description }}</td>
+            <td>{{ service.prestataireNom || 'Aucun' }}</td>
             <td>
               <p-tag [value]="service.isActive === false ? 'Désactivé' : 'Actif'" [severity]="service.isActive === false ? 'danger' : 'success'"></p-tag>
             </td>
@@ -50,6 +52,10 @@
           <div class="flex flex-column gap-1">
             <label for="isActive">Statut</label>
             <p-select id="isActive" [options]="statusOptions" optionLabel="label" optionValue="value" formControlName="isActive" placeholder="Sélectionner"></p-select>
+          </div>
+          <div class="flex flex-column gap-1">
+            <label for="prestataireId">Prestataire</label>
+            <p-select id="prestataireId" [options]="prestataires" optionLabel="nom" optionValue="id" formControlName="prestataireId" placeholder="Sélectionner un prestataire"></p-select>
           </div>
           <div class="flex justify-content-end gap-2">
             <button pButton type="button" severity="secondary" label="Annuler" (click)="dialogVisible = false"></button>

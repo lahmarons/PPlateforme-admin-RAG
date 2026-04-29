@@ -45,6 +45,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\src\app\client\services\" />
+    <Folder Include="ClientApp\src\app\prestataire\models\" />
     <Folder Include="ClientApp\src\app\todo\" />
     <Folder Include="Controllers\" />
   </ItemGroup>

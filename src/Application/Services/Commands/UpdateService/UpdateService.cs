@@ -8,6 +8,7 @@ public record UpdateServiceCommand : IRequest
     public string Nom { get; init; } = string.Empty;
     public string Description { get; init; } = string.Empty;
     public bool IsActive { get; init; }
+    public int? PrestataireId { get; init; }
 }
 
 public class UpdateServiceCommandHandler : IRequestHandler<UpdateServiceCommand>
@@ -29,6 +30,7 @@ public class UpdateServiceCommandHandler : IRequestHandler<UpdateServiceCommand>
         entity.Nom = request.Nom;
         entity.Description = request.Description;
         entity.IsActive = request.IsActive;
+        entity.PrestataireId = request.PrestataireId;
 
         await _context.SaveChangesAsync(cancellationToken);
     }

@@ -18,5 +18,7 @@ public interface IApplicationDbContext
 
     DbSet<Document> Documents { get; }
 
+    DbSet<Prestataire> Prestataires { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

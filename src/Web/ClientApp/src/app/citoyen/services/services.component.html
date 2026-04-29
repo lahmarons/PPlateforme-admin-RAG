@@ -3,7 +3,17 @@
     <div class="card">
       <div class="flex flex-column gap-1 mb-4">
         <h5 class="m-0">Services disponibles</h5>
-        <p class="m-0 text-color-secondary">Choisissez un service pour créer une demande</p>
+        <p class="m-0 text-color-secondary">Services organisés par prestataire</p>
+      </div>
+
+      <div class="grid grid-cols-12 gap-3 mb-4">
+        <div class="col-span-12 md:col-span-8">
+          <input pInputText class="w-full" placeholder="Rechercher un service" [(ngModel)]="recherche" />
+        </div>
+        <div class="col-span-12 md:col-span-4 flex gap-2">
+          <button pButton type="button" label="Filtrer" icon="pi pi-filter" (click)="applyFilter()"></button>
+          <button pButton type="button" label="Reset" icon="pi pi-refresh" severity="secondary" (click)="clearFilter()"></button>
+        </div>
       </div>
 
       @if (loading) {
@@ -16,19 +26,28 @@
       <p-message *ngIf="errorMessage" severity="error" [text]="errorMessage"></p-message>
 
       @if (!loading && !errorMessage) {
-      <div class="grid grid-cols-12 gap-4">
-        @for (service of services; track service.id) {
-        <div class="col-span-12 md:col-span-6 xl:col-span-4">
-          <div class="surface-card border border-surface rounded-border p-4 h-full flex flex-column gap-3">
-            <div>
-              <h6 class="m-0 mb-2">{{ service.nom }}</h6>
-              <p class="m-0 text-color-secondary">{{ service.description || 'Description non disponible.' }}</p>
+        @for (item of prestataireServices; track item.prestataire.id) {
+        <div class="mb-6">
+          <div class="mb-3 pb-3" style="border-bottom: 2px solid var(--surface-border);">
+            <h4 class="m-0">{{ item.prestataire.nom }}</h4>
+            <p class="m-0 text-color-secondary text-sm">{{ item.prestataire.description }}</p>
+          </div>
+
+          <div class="grid grid-cols-12 gap-4">
+            @for (service of item.services; track service.id) {
+            <div class="col-span-12 md:col-span-6 xl:col-span-4">
+              <div class="surface-card border border-surface rounded-border p-4 h-full flex flex-column gap-3">
+                <div>
+                  <h6 class="m-0 mb-2">{{ service.nom }}</h6>
+                  <p class="m-0 text-color-secondary">{{ service.description || 'Description non disponible.' }}</p>
+                </div>
+                <a pButton class="w-full" [routerLink]="['/citoyen/demandes/nouvelle']" [queryParams]="{ serviceId: service.id }" icon="pi pi-send" label="Créer une demande"></a>
+              </div>
             </div>
-            <a pButton class="w-full" [routerLink]="['/citoyen/demandes/nouvelle']" [queryParams]="{ serviceId: service.id }" icon="pi pi-send" label="Créer une demande"></a>
+            }
           </div>
         </div>
         }
-      </div>
       }
     </div>
   </div>

@@ -18,12 +18,15 @@ public class GetServicesQueryHandler : IRequestHandler<GetServicesQuery, List<Se
     public async Task<List<ServiceDto>> Handle(GetServicesQuery request, CancellationToken cancellationToken)
     {
         return await _context.Services
+            .Include(s => s.Prestataire)
             .Select(s => new ServiceDto
             {
                 Id = s.Id,
                 Nom = s.Nom,
                 Description = s.Description,
-                //IsActive = s.IsActive
+                IsActive = s.IsActive,
+                PrestataireId = s.PrestataireId,
+                PrestataireNom = s.Prestataire != null ? s.Prestataire.Nom : string.Empty
             })
             .ToListAsync(cancellationToken);
     }

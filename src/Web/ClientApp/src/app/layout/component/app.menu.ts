@@ -38,6 +38,7 @@ export class AppMenu {
                     { label: 'Connexion', icon: 'pi pi-fw pi-sign-in', routerLink: ['/citoyen/connexion'] },
                     { label: 'Tableau de bord', icon: 'pi pi-fw pi-th-large', routerLink: ['/citoyen/dashboard'] },
                     { label: 'Services', icon: 'pi pi-fw pi-briefcase', routerLink: ['/citoyen/services'] },
+                    { label: 'Prestataires', icon: 'pi pi-fw pi-building', routerLink: ['/prestataires'] },
                     { label: 'Mes demandes', icon: 'pi pi-fw pi-inbox', routerLink: ['/citoyen/demandes'] },
                     { label: 'Créer une demande', icon: 'pi pi-fw pi-send', routerLink: ['/citoyen/demandes/nouvelle'] },
                     { label: 'Chatbot', icon: 'pi pi-fw pi-comments', routerLink: ['/citoyen/chatbot'] }
@@ -58,7 +59,8 @@ export class AppMenu {
                     { label: 'Connexion', icon: 'pi pi-fw pi-sign-in', routerLink: ['/admin/connexion'] },
                     { label: 'Dashboard', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/admin/dashboard'] },
                     { label: 'Services', icon: 'pi pi-fw pi-briefcase', routerLink: ['/admin/services'] },
-                    { label: 'Agents', icon: 'pi pi-fw pi-users', routerLink: ['/admin/agents'] }
+                    { label: 'Agents', icon: 'pi pi-fw pi-users', routerLink: ['/admin/agents'] },
+                    { label: 'Prestataires', icon: 'pi pi-fw pi-building', routerLink: ['/admin/prestataires'] }
                 ]
             },
             {

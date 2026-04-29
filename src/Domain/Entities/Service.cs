@@ -8,6 +8,10 @@ public class Service : BaseAuditableEntity
 
     public bool IsActive { get; set; } = true;
 
+    public int? PrestataireId { get; set; }
+
+    public Prestataire? Prestataire { get; set; }
+
     public IList<Agent> Agents { get; private set; } = new List<Agent>();
 
     public IList<Demande> Demandes { get; private set; } = new List<Demande>();

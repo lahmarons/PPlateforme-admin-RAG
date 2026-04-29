@@ -21,6 +21,7 @@ public class GetServiceByIdQueryHandler : IRequestHandler<GetServiceByIdQuery, S
     {
         var entity = await _context.Services
             .AsNoTracking()
+            .Include(s => s.Prestataire)
             .FirstOrDefaultAsync(s => s.Id == request.Id, cancellationToken);
 
         if (entity is null)
@@ -32,7 +33,10 @@ public class GetServiceByIdQueryHandler : IRequestHandler<GetServiceByIdQuery, S
         {
             Id = entity.Id,
             Nom = entity.Nom,
-            Description = entity.Description
+            Description = entity.Description,
+            IsActive = entity.IsActive,
+            PrestataireId = entity.PrestataireId,
+            PrestataireNom = entity.Prestataire != null ? entity.Prestataire.Nom : string.Empty
         };
     }
 }

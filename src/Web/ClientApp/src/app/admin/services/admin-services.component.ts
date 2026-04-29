@@ -11,7 +11,7 @@ import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { firstValueFrom } from 'rxjs';
-import { CreateServiceCommand, ServiceDto, ServicesClient, UpdateServiceCommand } from '../../web-api-client';
+import { CreateServiceCommand, PrestataireDto, PrestatairesClient, ServiceDto, ServicesClient, UpdateServiceCommand } from '../../web-api-client';
 
 @Component({
   selector: 'app-admin-services',
@@ -23,6 +23,7 @@ export class AdminServicesComponent implements OnInit {
   loading = true;
   errorMessage: string | null = null;
   services: ServiceDto[] = [];
+  prestataires: PrestataireDto[] = [];
   dialogVisible = false;
   editingService: ServiceDto | null = null;
   readonly statusOptions = [
@@ -33,13 +34,27 @@ export class AdminServicesComponent implements OnInit {
   readonly form = this.fb.nonNullable.group({
     nom: ['', [Validators.required]],
     description: ['', [Validators.required]],
-    isActive: [true]
+    isActive: [true],
+    prestataireId: [null as number | null]
   });
 
-  constructor(private readonly fb: FormBuilder, private readonly servicesClient: ServicesClient) {}
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly servicesClient: ServicesClient,
+    private readonly prestatairesClient: PrestatairesClient
+  ) {}
 
   async ngOnInit(): Promise<void> {
+    await this.loadPrestataires();
     await this.load();
+  }
+
+  async loadPrestataires(): Promise<void> {
+    try {
+      this.prestataires = await firstValueFrom(this.prestatairesClient.getPrestataires(undefined, undefined));
+    } catch {
+      this.errorMessage = 'Impossible de charger les prestataires.';
+    }
   }
 
   async load(): Promise<void> {
@@ -54,7 +69,7 @@ export class AdminServicesComponent implements OnInit {
 
   openCreate(): void {
     this.editingService = null;
-    this.form.reset({ nom: '', description: '', isActive: true });
+    this.form.reset({ nom: '', description: '', isActive: true, prestataireId: null });
     this.dialogVisible = true;
   }
 
@@ -63,7 +78,8 @@ export class AdminServicesComponent implements OnInit {
     this.form.reset({
       nom: service.nom,
       description: service.description,
-      isActive: service.isActive !== false
+      isActive: service.isActive !== false,
+      prestataireId: service.prestataireId ?? null
     });
     this.dialogVisible = true;
   }
@@ -78,7 +94,8 @@ export class AdminServicesComponent implements OnInit {
     const command = new CreateServiceCommand({
       nom: value.nom,
       description: value.description,
-      isActive: value.isActive
+      isActive: value.isActive,
+      prestataireId: value.prestataireId ?? undefined
     });
 
     if (this.editingService) {
@@ -86,7 +103,8 @@ export class AdminServicesComponent implements OnInit {
         id: this.editingService.id,
         nom: value.nom,
         description: value.description,
-        isActive: value.isActive
+        isActive: value.isActive,
+        prestataireId: value.prestataireId ?? undefined
       });
 
       this.servicesClient.updateService(this.editingService.id, updateCommand).subscribe({
@@ -107,7 +125,8 @@ export class AdminServicesComponent implements OnInit {
       id: service.id,
       nom: service.nom,
       description: service.description,
-      isActive: !(service.isActive ?? true)
+      isActive: !(service.isActive ?? true),
+      prestataireId: service.prestataireId ?? undefined
     });
 
     this.servicesClient.updateService(service.id, command).subscribe({
@@ -117,6 +136,10 @@ export class AdminServicesComponent implements OnInit {
   }
 
   delete(service: ServiceDto): void {
+    if (!service.id) {
+      return;
+    }
+
     this.servicesClient.deleteService(service.id).subscribe({
       next: () => this.load(),
       error: () => this.errorMessage = 'Impossible de supprimer le service.'

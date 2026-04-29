@@ -125,6 +125,41 @@ namespace IdaraTech.Infrastructure.Migrations
                     b.ToTable("Documents");
                 });
 
+            modelBuilder.Entity("IdaraTech.Domain.Entities.Prestataire", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nom")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Prestataires");
+                });
+
             modelBuilder.Entity("IdaraTech.Domain.Entities.Service", b =>
                 {
                     b.Property<int>("Id")
@@ -158,7 +193,12 @@ namespace IdaraTech.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<int?>("PrestataireId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PrestataireId");
 
                     b.ToTable("Services");
                 });
@@ -514,6 +554,16 @@ namespace IdaraTech.Infrastructure.Migrations
                     b.Navigation("Demande");
                 });
 
+            modelBuilder.Entity("IdaraTech.Domain.Entities.Service", b =>
+                {
+                    b.HasOne("IdaraTech.Domain.Entities.Prestataire", "Prestataire")
+                        .WithMany("Services")
+                        .HasForeignKey("PrestataireId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Prestataire");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -578,6 +628,11 @@ namespace IdaraTech.Infrastructure.Migrations
             modelBuilder.Entity("IdaraTech.Domain.Entities.Demande", b =>
                 {
                     b.Navigation("Documents");
+                });
+
+            modelBuilder.Entity("IdaraTech.Domain.Entities.Prestataire", b =>
+                {
+                    b.Navigation("Services");
                 });
 
             modelBuilder.Entity("IdaraTech.Domain.Entities.Service", b =>

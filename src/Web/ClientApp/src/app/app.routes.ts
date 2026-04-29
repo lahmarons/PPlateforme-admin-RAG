@@ -17,6 +17,8 @@ import { AdminConnexionComponent } from './admin/connexion/admin-connexion.compo
 import { AdminDashboardComponent } from './admin/dashboard/admin-dashboard.component';
 import { AdminServicesComponent } from './admin/services/admin-services.component';
 import { AdminAgentsComponent } from './admin/agents/admin-agents.component';
+import { AdminPrestatairesComponent } from './admin/prestataires/admin-prestataires.component';
+import { PrestataireListComponent } from './prestataire/client/prestataire-list.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -36,5 +38,7 @@ export const routes: Routes = [
   { path: 'admin/connexion', component: AdminConnexionComponent },
   { path: 'admin/dashboard', component: AdminDashboardComponent },
   { path: 'admin/services', component: AdminServicesComponent },
-  { path: 'admin/agents', component: AdminAgentsComponent }
+  { path: 'admin/agents', component: AdminAgentsComponent },
+  { path: 'admin/prestataires', component: AdminPrestatairesComponent },
+  { path: 'prestataires', component: PrestataireListComponent }
 ];
