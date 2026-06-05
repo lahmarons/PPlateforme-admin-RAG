@@ -1,26 +1,112 @@
-<div class="chatbot-page">
-  <div class="chatbot-card-shell">
-    <div class="card chatbot-card">
-      <div class="flex flex-column gap-1 mb-4 text-center">
-        <h5 class="m-0">Chatbot citoyen</h5>
-        <p class="m-0 text-color-secondary">Aide rapide pour vos services et demandes</p>
+<div class="chatbot-page" [attr.dir]="(currentLang === 'ar' || currentLang === 'tn') ? 'rtl' : 'ltr'">
+  <div class="chatbot-card-shell max-w-3xl mx-auto my-4">
+    <div class="card chatbot-card border border-surface shadow-lg rounded-2xl overflow-hidden bg-card">
+      
+      <!-- Card Header -->
+      <div class="flex align-items-center justify-content-between p-4 border-b border-surface">
+        <div class="flex align-items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-blue-100 flex align-items-center justify-content-center text-xl">
+            🤖
+          </div>
+          <div>
+            <h5 class="m-0 font-bold text-lg">IDARATECH AI</h5>
+            <p class="m-0 text-sm text-color-secondary">
+              {{ currentLang === 'fr' ? 'Assistant Citoyen' : 'المساعد المواطن' }}
+            </p>
+          </div>
+        </div>
+
+        <div class="flex align-items-center gap-2">
+          <!-- Language selector -->
+          <div class="flex bg-slate-100 p-1 rounded-lg border border-surface">
+            <button pButton type="button" (click)="changeLanguage('fr')" 
+                    class="p-button-text p-button-sm px-2 py-1 m-0 text-xs" 
+                    [ngClass]="{ 'font-bold bg-white shadow-sm': currentLang === 'fr' }">FR</button>
+            <button pButton type="button" (click)="changeLanguage('ar')" 
+                    class="p-button-text p-button-sm px-2 py-1 m-0 text-xs" 
+                    [ngClass]="{ 'font-bold bg-white shadow-sm': currentLang === 'ar' }">عربي</button>
+            <button pButton type="button" (click)="changeLanguage('tn')" 
+                    class="p-button-text p-button-sm px-2 py-1 m-0 text-xs" 
+                    [ngClass]="{ 'font-bold bg-white shadow-sm': currentLang === 'tn' }">دارجة</button>
+          </div>
+
+          <!-- Clear Button -->
+          <button pButton type="button" icon="pi pi-trash" 
+                  class="p-button-outlined p-button-danger p-button-sm" 
+                  (click)="clearChat()" title="Effacer la conversation"></button>
+        </div>
       </div>
 
-      <div class="flex flex-column gap-2 mb-3 p-3 border border-surface rounded-border surface-ground chatbot-messages"
-        style="max-height: 24rem; overflow: auto;">
-        @for (message of messages; track $index) {
-        <div class="flex" [ngClass]="{ 'justify-content-end': message.from === 'user' }">
-          <p-tag [value]="message.text" [severity]="message.from === 'user' ? 'info' : 'secondary'"></p-tag>
-        </div>
+      <!-- Messages Stream -->
+      <div class="flex flex-column gap-3 p-4 border border-surface rounded-lg surface-ground chatbot-messages"
+        style="height: 28rem; overflow-y: auto;">
+        
+        @for (message of messages; track message.id) {
+          <div class="flex w-full" [ngClass]="{ 'justify-content-end': message.sender === 'user', 'justify-content-start': message.sender === 'bot' }">
+            
+            <div class="max-w-max p-3 rounded-2xl shadow-sm text-sm" 
+                 [ngClass]="{ 
+                   'bg-blue-600 text-white rounded-br-none': message.sender === 'user' && currentLang !== 'ar' && currentLang !== 'tn',
+                   'bg-blue-600 text-white rounded-bl-none': message.sender === 'user' && (currentLang === 'ar' || currentLang === 'tn'),
+                   'bg-white text-slate-800 border border-slate-200 rounded-bl-none': message.sender === 'bot' && currentLang !== 'ar' && currentLang !== 'tn',
+                   'bg-white text-slate-800 border border-slate-200 rounded-br-none': message.sender === 'bot' && (currentLang === 'ar' || currentLang === 'tn')
+                 }">
+              
+              <div class="whitespace-pre-wrap">{{ message.text }}</div>
+              
+              <!-- Typing dots inside tag if typing -->
+              @if (message.isTyping) {
+                <div class="flex gap-1 py-1 px-2">
+                  <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></span>
+                  <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+                  <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></span>
+                </div>
+              }
+              
+              @if (!message.isTyping) {
+                <div class="text-[9px] opacity-70 mt-1" [ngClass]="{ 'text-right': message.sender === 'user', 'text-left': message.sender === 'bot' }">
+                  {{ message.timestamp | date:'HH:mm' }}
+                </div>
+              }
+            </div>
+
+          </div>
         }
       </div>
 
-      <div class="flex flex-column gap-2">
-        <textarea pInputTextarea rows="3" [(ngModel)]="question" placeholder="Posez votre question..."></textarea>
-        <div class="flex justify-content-end">
-          <button pButton type="button" icon="pi pi-send" label="Envoyer" (click)="send()"></button>
+      <!-- Quick replies & Composer -->
+      <div class="p-4 bg-white border-t border-surface flex flex-column gap-3">
+        <!-- Quick replies -->
+        @if (quickReplies.length > 0 && !isLoading) {
+          <div class="flex gap-2 overflow-x-auto pb-2" style="scrollbar-width: thin;">
+            @for (reply of quickReplies; track reply.id) {
+              <button pButton type="button" 
+                      class="p-button-outlined p-button-secondary p-button-sm rounded-full whitespace-nowrap text-xs px-3 py-1.5"
+                      (click)="selectQuickReply(reply)">
+                {{ reply.text }}
+              </button>
+            }
+          </div>
+        }
+
+        <!-- Composer -->
+        <div class="flex gap-2">
+          <textarea pInputTextarea rows="2" 
+                    [(ngModel)]="question" 
+                    [placeholder]="currentLang === 'fr' ? 'Posez votre question...' : 'طرح سؤالك هنا...'"
+                    [disabled]="isLoading"
+                    class="flex-1 rounded-xl p-3 border border-slate-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none resize-none text-sm"></textarea>
+          <div class="flex align-items-end">
+            <button pButton type="button" 
+                    icon="pi pi-send" 
+                    [label]="currentLang === 'fr' ? 'Envoyer' : 'إرسال'" 
+                    [disabled]="!question.trim() || isLoading"
+                    (click)="send()"
+                    class="p-button-primary rounded-xl px-4 py-3 h-full"></button>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 </div>

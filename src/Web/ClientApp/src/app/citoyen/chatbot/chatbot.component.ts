@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { TextareaModule } from 'primeng/textarea';
 import { TagModule } from 'primeng/tag';
-
-type ChatMessage = { from: 'user' | 'bot'; text: string };
+import { ChatService, Message, QuickReply, Language } from '../../services/chat.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-citoyen-chatbot',
@@ -14,28 +14,61 @@ type ChatMessage = { from: 'user' | 'bot'; text: string };
   imports: [CommonModule, FormsModule, CardModule, ButtonModule, TextareaModule, TagModule],
   templateUrl: './chatbot.component.html'
 })
-export class ChatbotComponent {
+export class ChatbotComponent implements OnInit, OnDestroy {
+  private chatService = inject(ChatService);
+
   question = '';
-  messages: ChatMessage[] = [
-    { from: 'bot', text: 'Bonjour 👋 Je suis votre assistant citoyen. Comment puis-je vous aider ?' }
-  ];
+  messages: Message[] = [];
+  isLoading = false;
+  currentLang: Language = 'fr';
+  quickReplies: QuickReply[] = [];
+
+  private subscriptions = new Subscription();
+
+  ngOnInit(): void {
+    this.subscriptions.add(
+      this.chatService.messages$.subscribe(msgs => {
+        this.messages = msgs;
+      })
+    );
+
+    this.subscriptions.add(
+      this.chatService.isLoading$.subscribe(loading => {
+        this.isLoading = loading;
+      })
+    );
+
+    this.subscriptions.add(
+      this.chatService.language$.subscribe(lang => {
+        this.currentLang = lang;
+        this.quickReplies = this.chatService.getQuickReplies(lang);
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
 
   send(): void {
     const text = this.question.trim();
-    if (!text) {
+    if (!text || this.isLoading) {
       return;
     }
 
-    this.messages.push({ from: 'user', text });
+    this.chatService.addUserMessage(text);
     this.question = '';
+  }
 
-    const lower = text.toLowerCase();
-    const answer = lower.includes('demande')
-      ? 'Pour créer une demande, allez dans "Services" ou "Créer une demande" depuis votre tableau de bord.'
-      : lower.includes('service')
-      ? 'Vous pouvez consulter les services disponibles dans la rubrique "Services".'
-      : 'Merci pour votre message. Un agent pourra vous assister davantage si nécessaire.';
+  selectQuickReply(reply: QuickReply): void {
+    this.chatService.addUserMessage(reply.text);
+  }
 
-    this.messages.push({ from: 'bot', text: answer });
+  changeLanguage(lang: Language): void {
+    this.chatService.changeLanguage(lang);
+  }
+
+  clearChat(): void {
+    this.chatService.clearMessages();
   }
 }

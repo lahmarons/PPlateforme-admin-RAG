@@ -1,4 +1,4 @@
-﻿using IdaraTech.Application.Common.Models;
+using IdaraTech.Application.Common.Models;
 
 namespace IdaraTech.Application.Common.Interfaces;
 
@@ -11,6 +11,8 @@ public interface IIdentityService
     Task<bool> AuthorizeAsync(string userId, string policyName);
 
     Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password);
+
+    Task<Result> AddToRoleAsync(string userId, string role);
 
     Task<Result> DeleteUserAsync(string userId);
 }
