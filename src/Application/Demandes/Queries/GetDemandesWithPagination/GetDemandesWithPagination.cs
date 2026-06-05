@@ -56,6 +56,26 @@ public class GetDemandesWithPaginationQueryHandler : IRequestHandler<GetDemandes
                 query = query.Where(d => false);
             }
         }
+        else if (_user.Id != null && _user.Roles != null && _user.Roles.Contains(Roles.Agent))
+        {
+            var email = await _identityService.GetUserNameAsync(_user.Id);
+            if (!string.IsNullOrEmpty(email))
+            {
+                var agent = await _context.Agents.FirstOrDefaultAsync(a => a.Email == email, cancellationToken);
+                if (agent != null)
+                {
+                    query = query.Where(d => d.ServiceId == agent.ServiceId);
+                }
+                else
+                {
+                    query = query.Where(d => false);
+                }
+            }
+            else
+            {
+                query = query.Where(d => false);
+            }
+        }
 
         var selectQuery = query.Select(d => new DemandeDto
         {
