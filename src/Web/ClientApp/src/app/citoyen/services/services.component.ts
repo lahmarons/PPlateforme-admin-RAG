@@ -7,6 +7,8 @@ import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { InputTextModule } from 'primeng/inputtext';
+import { DialogModule } from 'primeng/dialog';
+import { TagModule } from 'primeng/tag';
 import { ServicesClient, ServiceDto, PrestatairesClient, PrestataireDto } from '../../web-api-client';
 
 interface PrestataireWithServices {
@@ -17,7 +19,7 @@ interface PrestataireWithServices {
 @Component({
   selector: 'app-citoyen-services',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, CardModule, ButtonModule, MessageModule, ProgressSpinnerModule, InputTextModule],
+  imports: [CommonModule, FormsModule, RouterModule, CardModule, ButtonModule, MessageModule, ProgressSpinnerModule, InputTextModule, DialogModule, TagModule],
   templateUrl: './services.component.html'
 })
 export class ServicesComponent implements OnInit {
@@ -27,6 +29,8 @@ export class ServicesComponent implements OnInit {
   prestataires: PrestataireDto[] = [];
   prestataireServices: PrestataireWithServices[] = [];
   recherche = '';
+  selectedService: ServiceDto | null = null;
+  detailsVisible = false;
 
   constructor(
     private readonly servicesClient: ServicesClient,
@@ -70,6 +74,24 @@ export class ServicesComponent implements OnInit {
   clearFilter(): void {
     this.recherche = '';
     this.buildPrestataireServices();
+  }
+
+  showDetails(service: ServiceDto): void {
+    this.selectedService = service;
+    this.detailsVisible = true;
+  }
+
+  closeDetails(): void {
+    this.detailsVisible = false;
+    this.selectedService = null;
+  }
+
+  getStatusLabel(service: ServiceDto): string {
+    return service.isActive ? 'Actif' : 'Désactivé';
+  }
+
+  getStatusSeverity(service: ServiceDto): 'success' | 'danger' {
+    return service.isActive ? 'success' : 'danger';
   }
 
   private buildPrestataireServices(): void {

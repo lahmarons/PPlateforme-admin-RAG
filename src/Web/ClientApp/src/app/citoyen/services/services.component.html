@@ -37,11 +37,17 @@
             @for (service of item.services; track service.id) {
             <div class="col-span-12 md:col-span-6 xl:col-span-4">
               <div class="surface-card border border-surface rounded-border p-4 h-full flex flex-column gap-3">
-                <div>
-                  <h6 class="m-0 mb-2">{{ service.nom }}</h6>
+                <div class="flex flex-column gap-2">
+                  <div class="flex align-items-start justify-content-between gap-3">
+                    <h6 class="m-0">{{ service.nom }}</h6>
+                    <p-tag [value]="getStatusLabel(service)" [severity]="getStatusSeverity(service)"></p-tag>
+                  </div>
                   <p class="m-0 text-color-secondary">{{ service.description || 'Description non disponible.' }}</p>
                 </div>
-                <a pButton class="w-full" [routerLink]="['/citoyen/demandes/nouvelle']" [queryParams]="{ serviceId: service.id }" icon="pi pi-send" label="Créer une demande"></a>
+                <div class="mt-auto flex flex-column gap-2">
+                  <button pButton type="button" class="w-full" severity="secondary" icon="pi pi-info-circle" label="Plus d'informations" (click)="showDetails(service)"></button>
+                  <a pButton class="w-full" [routerLink]="['/citoyen/demandes/nouvelle']" [queryParams]="{ serviceId: service.id }" icon="pi pi-send" label="Créer une demande"></a>
+                </div>
               </div>
             </div>
             }
@@ -49,6 +55,35 @@
         </div>
         }
       }
+
+      <p-dialog [(visible)]="detailsVisible" [modal]="true" [style]="{ width: '32rem' }" header="Détails du service" (onHide)="closeDetails()" appendTo="body">
+        @if (selectedService) {
+          <div class="flex flex-column gap-3">
+            <div class="flex align-items-start justify-content-between gap-3">
+              <div>
+                <h4 class="m-0">{{ selectedService.nom }}</h4>
+                <p class="m-0 text-color-secondary">{{ selectedService.prestataireNom || 'Prestataire non renseigné' }}</p>
+              </div>
+              <p-tag [value]="getStatusLabel(selectedService)" [severity]="getStatusSeverity(selectedService)"></p-tag>
+            </div>
+
+            <div class="flex flex-column gap-1">
+              <span class="text-color-secondary text-sm">Description</span>
+              <p class="m-0">{{ selectedService.description || 'Description non disponible.' }}</p>
+            </div>
+
+            <div class="flex flex-column gap-1">
+              <span class="text-color-secondary text-sm">Prestataire</span>
+              <p class="m-0">{{ selectedService.prestataireNom || 'Aucun' }}</p>
+            </div>
+
+            <div class="flex justify-content-end gap-2">
+              <button pButton type="button" severity="secondary" label="Fermer" (click)="closeDetails()"></button>
+              <a pButton [routerLink]="['/citoyen/demandes/nouvelle']" [queryParams]="{ serviceId: selectedService.id }" icon="pi pi-send" label="Créer une demande"></a>
+            </div>
+          </div>
+        }
+      </p-dialog>
     </div>
   </div>
 </div>

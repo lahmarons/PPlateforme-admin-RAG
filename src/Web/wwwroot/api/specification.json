@@ -300,6 +300,89 @@
         }
       }
     },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "operationId": "PostApiAuthLogin",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/auth/register/citoyen": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "operationId": "PostApiAuthRegisterCitoyen",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterCitoyenRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "operationId": "GetApiAuthMe",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "operationId": "PostApiAuthLogout",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/Citoyens": {
       "get": {
         "tags": [
@@ -1281,6 +1364,65 @@
           }
         }
       },
+      "LoginRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "RegisterCitoyenRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "nom": {
+            "type": "string"
+          },
+          "adresse": {
+            "type": "string"
+          },
+          "telephone": {
+            "type": "string"
+          }
+        }
+      },
+      "AuthResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "redirectUrl": {
+            "type": "string"
+          },
+          "citoyenId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
       "CitoyenDto": {
         "type": "object",
         "additionalProperties": false,
@@ -1461,6 +1603,27 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocumentUploadDto"
+            }
+          }
+        }
+      },
+      "DocumentUploadDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "nom": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "contenuBase64": {
+            "type": "string"
           }
         }
       },
@@ -1532,6 +1695,10 @@
           },
           "type": {
             "type": "string"
+          },
+          "contenu": {
+            "type": "string",
+            "format": "byte"
           },
           "demandeId": {
             "type": "integer",

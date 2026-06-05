@@ -25,7 +25,9 @@ export class AdminAgentsComponent implements OnInit {
   agents: AgentDto[] = [];
   services: ServiceDto[] = [];
   dialogVisible = false;
+  detailsVisible = false;
   editingAgent: AgentDto | null = null;
+  selectedAgent: AgentDto | null = null;
   readonly statusOptions = [
     { label: 'Actif', value: true },
     { label: 'Désactivé', value: false }
@@ -85,6 +87,28 @@ export class AdminAgentsComponent implements OnInit {
       serviceId: agent.serviceId || null
     });
     this.dialogVisible = true;
+  }
+
+  openDetails(agent: AgentDto): void {
+    this.selectedAgent = agent;
+    this.detailsVisible = true;
+  }
+
+  closeDetails(): void {
+    this.detailsVisible = false;
+    this.selectedAgent = null;
+  }
+
+  getServiceName(serviceId?: number | null): string {
+    if (!serviceId) {
+      return 'Aucun';
+    }
+
+    return this.services.find(s => s.id === serviceId)?.nom ?? 'Aucun';
+  }
+
+  getStatusLabel(isActive?: boolean): string {
+    return isActive === false ? 'Désactivé' : 'Actif';
   }
 
   save(): void {

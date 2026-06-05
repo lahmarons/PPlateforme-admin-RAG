@@ -1,20 +1,18 @@
 import { Injectable, computed, signal } from '@angular/core';
-import { AgentDto } from '../../web-api-client';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AgentSessionService {
-  private readonly _agent = signal<AgentDto | null>(null);
+  private readonly _connected = signal(false);
 
-  readonly agent = this._agent.asReadonly();
-  readonly isConnected = computed(() => this._agent() !== null);
+  readonly isConnected = computed(() => this._connected());
 
-  setConnected(agent: AgentDto): void {
-    this._agent.set(agent);
+  markConnected(): void {
+    this._connected.set(true);
   }
 
   clear(): void {
-    this._agent.set(null);
+    this._connected.set(false);
   }
 }

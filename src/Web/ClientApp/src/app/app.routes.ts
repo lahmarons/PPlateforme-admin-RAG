@@ -19,26 +19,36 @@ import { AdminServicesComponent } from './admin/services/admin-services.componen
 import { AdminAgentsComponent } from './admin/agents/admin-agents.component';
 import { AdminPrestatairesComponent } from './admin/prestataires/admin-prestataires.component';
 import { PrestataireListComponent } from './prestataire/client/prestataire-list.component';
+import { AppLayout } from './layout/component/app.layout';
+import { ConnexionHubComponent } from './connexion/connexion.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent, pathMatch: 'full' },
-  { path: 'counter', component: CounterComponent },
-  { path: 'fetch-data', component: FetchDataComponent },
+  { path: '', component: HomeComponent },
+  { path: 'connexion', component: ConnexionHubComponent },
+  {
+    path: '',
+    component: AppLayout,
+    children: [
+      { path: 'counter', component: CounterComponent },
+      { path: 'fetch-data', component: FetchDataComponent },
+      { path: 'citoyen/dashboard', component: DashboardComponent },
+      { path: 'citoyen/services', component: ServicesComponent },
+      { path: 'citoyen/demandes', component: MesDemandesComponent },
+      { path: 'citoyen/demandes/nouvelle', component: NouvelleDemandeComponent },
+      { path: 'citoyen/chatbot', component: ChatbotComponent },
+      { path: 'agent/dashboard', component: AgentDashboardComponent },
+      { path: 'agent/demandes', component: AgentDemandesComponent },
+      { path: 'agent/chatbot', component: AgentChatbotComponent },
+      { path: 'admin/dashboard', component: AdminDashboardComponent },
+      { path: 'admin/services', component: AdminServicesComponent },
+      { path: 'admin/agents', component: AdminAgentsComponent },
+      { path: 'admin/prestataires', component: AdminPrestatairesComponent },
+      { path: 'prestataires', component: PrestataireListComponent }
+    ]
+  },
   { path: 'citoyen/inscription', component: InscriptionComponent },
   { path: 'citoyen/connexion', component: ConnexionComponent },
-  { path: 'citoyen/dashboard', component: DashboardComponent },
-  { path: 'citoyen/services', component: ServicesComponent },
-  { path: 'citoyen/demandes', component: MesDemandesComponent },
-  { path: 'citoyen/demandes/nouvelle', component: NouvelleDemandeComponent },
-  { path: 'citoyen/chatbot', component: ChatbotComponent },
   { path: 'agent/connexion', component: AgentConnexionComponent },
-  { path: 'agent/dashboard', component: AgentDashboardComponent },
-  { path: 'agent/demandes', component: AgentDemandesComponent },
-  { path: 'agent/chatbot', component: AgentChatbotComponent },
   { path: 'admin/connexion', component: AdminConnexionComponent },
-  { path: 'admin/dashboard', component: AdminDashboardComponent },
-  { path: 'admin/services', component: AdminServicesComponent },
-  { path: 'admin/agents', component: AdminAgentsComponent },
-  { path: 'admin/prestataires', component: AdminPrestatairesComponent },
-  { path: 'prestataires', component: PrestataireListComponent }
+  { path: '**', redirectTo: 'connexion' }
 ];

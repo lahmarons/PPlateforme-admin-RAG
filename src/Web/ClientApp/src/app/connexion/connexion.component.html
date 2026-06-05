@@ -1,0 +1,37 @@
+<app-floating-configurator />
+
+<div class="auth-page">
+  <div class="auth-card-shell auth-card-shell-wide">
+    <div class="auth-card-accent"></div>
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="auth-brand-icon">
+          <i class="pi pi-shield"></i>
+        </div>
+        <h1>Connexion</h1>
+        <p>Choisissez votre espace</p>
+      </div>
+
+      <div class="grid grid-cols-12 gap-3">
+        <div class="col-span-12 md:col-span-4">
+          <p-card header="Citoyen">
+            <p class="mb-3">Accès à l’espace citoyen.</p>
+            <a pButton routerLink="/citoyen/connexion" label="Continuer" icon="pi pi-user"></a>
+          </p-card>
+        </div>
+        <div class="col-span-12 md:col-span-4">
+          <p-card header="Agent">
+            <p class="mb-3">Accès à l’espace agent.</p>
+            <a pButton routerLink="/agent/connexion" label="Continuer" icon="pi pi-briefcase"></a>
+          </p-card>
+        </div>
+        <div class="col-span-12 md:col-span-4">
+          <p-card header="Administrateur">
+            <p class="mb-3">Accès à l’espace administrateur.</p>
+            <a pButton routerLink="/admin/connexion" label="Continuer" icon="pi pi-building"></a>
+          </p-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

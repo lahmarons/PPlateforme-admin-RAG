@@ -1,0 +1,357 @@
+.landing-wrapper {
+  background-color: var(--surface-ground);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: var(--text-color);
+  font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+}
+
+/* 1. Header Navbar */
+.landing-header {
+  background-color: var(--surface-card);
+  border-bottom: 1px solid var(--surface-border);
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.03);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 4.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.landing-header-container {
+  width: min(100%, 75rem);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.landing-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.landing-brand-logo {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  background-color: color-mix(in srgb, var(--primary-color) 12%, transparent);
+  color: var(--primary-color);
+  display: grid;
+  place-items: center;
+  font-size: 1.15rem;
+  font-weight: bold;
+}
+
+.landing-brand-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin: 0;
+}
+
+.landing-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.landing-nav-link {
+  color: var(--text-color-secondary);
+  font-weight: 500;
+  text-decoration: none;
+  font-size: 0.925rem;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: var(--primary-color);
+  }
+}
+
+/* 2. Hero Section */
+.landing-hero {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--primary-color) 85%, #000) 0%, color-mix(in srgb, var(--primary-color) 65%, #6366f1) 100%);
+  padding: 5.5rem 1.5rem 6.5rem;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  color: #ffffff;
+}
+
+.landing-hero-content {
+  position: relative;
+  z-index: 10;
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+.landing-hero-eyebrow {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  margin-bottom: 1.25rem;
+}
+
+.landing-hero-title {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 0 0 1rem;
+  letter-spacing: -0.02em;
+}
+
+.landing-hero-subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 2.5rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* 3. Search Bar Container */
+.landing-search-container {
+  background-color: var(--surface-card);
+  padding: 0.5rem;
+  border-radius: 999px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
+  display: flex;
+  max-width: 38rem;
+  margin: 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.landing-search-input {
+  flex-grow: 1;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0.75rem 1.5rem !important;
+  color: var(--text-color) !important;
+  font-size: 1rem !important;
+
+  &::placeholder {
+    color: var(--text-color-secondary) !important;
+    opacity: 0.7;
+  }
+}
+
+.landing-search-btn {
+  border-radius: 999px !important;
+  padding: 0.75rem 1.75rem !important;
+}
+
+/* Backdrop Circles */
+.hero-circle-1 {
+  position: absolute;
+  top: -10%;
+  left: -5%;
+  width: 25rem;
+  height: 25rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.hero-circle-2 {
+  position: absolute;
+  bottom: -20%;
+  right: -5%;
+  width: 30rem;
+  height: 30rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+/* 4. Section Container */
+.landing-section {
+  padding: 5rem 1.5rem;
+}
+
+.landing-section-container {
+  width: min(100%, 75rem);
+  margin: 0 auto;
+}
+
+.landing-section-header {
+  text-align: center;
+  max-width: 36rem;
+  margin: 0 auto 3.5rem;
+}
+
+.landing-section-title {
+  font-size: 1.85rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: var(--text-color);
+}
+
+.landing-section-subtitle {
+  color: var(--text-color-secondary);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* 5. Directory Cards */
+.category-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid var(--surface-border);
+  border-radius: 1rem;
+  padding: 2.25rem 2rem;
+  background-color: var(--surface-card);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.02);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.05);
+  }
+}
+
+.category-icon-wrapper {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 0.75rem;
+  display: grid;
+  place-items: center;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.category-icon-primary {
+  color: var(--primary-color);
+  background-color: color-mix(in srgb, var(--primary-color) 12%, transparent);
+}
+
+.category-icon-success {
+  color: var(--green-500, #22c55e);
+  background-color: color-mix(in srgb, #22c55e 12%, transparent);
+}
+
+.category-icon-info {
+  color: var(--blue-500, #3b82f6);
+  background-color: color-mix(in srgb, #3b82f6 12%, transparent);
+}
+
+.category-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem;
+  color: var(--text-color);
+}
+
+.category-desc {
+  color: var(--text-color-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0 0 1.5rem;
+  flex-grow: 1;
+}
+
+/* 6. Role Selection Layout */
+.role-card-wrapper {
+  background-color: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: 1.25rem;
+  padding: 3rem 2rem;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.03);
+}
+
+.role-card {
+  border: 1px solid var(--surface-border);
+  border-radius: 1rem;
+  padding: 2.25rem 1.75rem;
+  background-color: var(--surface-card);
+  text-align: center;
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  &:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 15px 30px color-mix(in srgb, var(--primary-color) 6%, transparent);
+    transform: translateY(-3px);
+  }
+}
+
+.role-icon {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 999px;
+  background-color: var(--surface-100);
+  color: var(--text-color-secondary);
+  display: grid;
+  place-items: center;
+  font-size: 1.75rem;
+  margin-bottom: 1.25rem;
+  transition: all 0.3s ease;
+}
+
+.role-card:hover .role-icon {
+  background-color: color-mix(in srgb, var(--primary-color) 12%, transparent);
+  color: var(--primary-color);
+}
+
+.role-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem;
+  color: var(--text-color);
+}
+
+.role-desc {
+  color: var(--text-color-secondary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0 0 1.75rem;
+}
+
+.role-btn {
+  width: 100%;
+  justify-content: center;
+}
+
+/* 7. Footer */
+.landing-footer {
+  background-color: var(--surface-card);
+  border-top: 1px solid var(--surface-border);
+  padding: 3rem 1.5rem;
+  margin-top: auto;
+  text-align: center;
+}
+
+.landing-footer-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.landing-footer-text {
+  color: var(--text-color-secondary);
+  font-size: 0.85rem;
+  margin: 0;
+}

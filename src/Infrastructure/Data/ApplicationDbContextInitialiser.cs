@@ -1,4 +1,5 @@
 ﻿using IdaraTech.Domain.Constants;
+using IdaraTech.Domain.Entities;
 using IdaraTech.Infrastructure.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -25,6 +26,11 @@ public static class InitialiserExtensions
 
 public class ApplicationDbContextInitialiser
 {
+    private const string AdministratorEmail = "administrator@localhost";
+    private const string AdministratorPassword = "Administrator1!";
+    private const string AgentEmail = "agent@localhost";
+    private const string AgentPassword = "Agent123!";
+
     private readonly ILogger<ApplicationDbContextInitialiser> _logger;
     private readonly ApplicationDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
@@ -82,25 +88,77 @@ public class ApplicationDbContextInitialiser
 
     public async Task TrySeedAsync()
     {
-        // Default roles
-        var administratorRole = new IdentityRole(Roles.Administrator);
-
-        if (_roleManager.Roles.All(r => r.Name != administratorRole.Name))
+        var roles = new[]
         {
-            await _roleManager.CreateAsync(administratorRole);
-        }
+            Roles.Citoyen,
+            Roles.Agent,
+            Roles.Administrator
+        };
 
-        // Default users
-        var administrator = new ApplicationUser { UserName = "administrator@localhost", Email = "administrator@localhost" };
-
-        if (_userManager.Users.All(u => u.UserName != administrator.UserName))
+        foreach (var roleName in roles)
         {
-            await _userManager.CreateAsync(administrator, "Administrator1!");
-            if (!string.IsNullOrWhiteSpace(administratorRole.Name))
+            if (await _roleManager.FindByNameAsync(roleName) is null)
             {
-                await _userManager.AddToRolesAsync(administrator, new [] { administratorRole.Name });
+                await _roleManager.CreateAsync(new IdentityRole(roleName));
             }
         }
 
+        await SeedIdentityUserAsync(AdministratorEmail, AdministratorPassword, Roles.Administrator);
+        await SeedIdentityUserAsync(AgentEmail, AgentPassword, Roles.Agent);
+
+        await SeedDomainAdminAsync();
+        await SeedDomainAgentAsync();
+    }
+
+    private async Task SeedIdentityUserAsync(string email, string password, string role)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user is null)
+        {
+            user = new ApplicationUser { UserName = email, Email = email };
+            var result = await _userManager.CreateAsync(user, password);
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException(string.Join(" ", result.Errors.Select(error => error.Description)));
+            }
+        }
+
+        if (!await _userManager.IsInRoleAsync(user, role))
+        {
+            await _userManager.AddToRoleAsync(user, role);
+        }
+    }
+
+    private async Task SeedDomainAdminAsync()
+    {
+        if (!_context.Admins.Any(admin => admin.Email == AdministratorEmail))
+        {
+            _context.Admins.Add(new Admin
+            {
+                Nom = "Administrateur",
+                Email = AdministratorEmail,
+                MotDePasse = AdministratorPassword
+            });
+
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    private async Task SeedDomainAgentAsync()
+    {
+        if (!_context.Agents.Any(agent => agent.Email == AgentEmail))
+        {
+            _context.Agents.Add(new Agent
+            {
+                Nom = "Agent",
+                Email = AgentEmail,
+                MotDePasse = AgentPassword,
+                Matricule = "AG-001",
+                Grade = "Senior",
+                IsActive = true
+            });
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

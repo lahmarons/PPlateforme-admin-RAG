@@ -39,6 +39,9 @@ app.UseSwaggerUi(settings =>
 
 app.UseExceptionHandler(options => { });
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapEndpoints();
 
 app.MapRazorPages();

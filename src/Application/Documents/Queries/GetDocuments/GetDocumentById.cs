@@ -33,6 +33,7 @@ public class GetDocumentByIdQueryHandler : IRequestHandler<GetDocumentByIdQuery,
             Id = entity.Id,
             Nom = entity.Nom,
             Type = entity.Type,
+            Contenu = entity.Contenu,
             DemandeId = entity.DemandeId
         };
     }

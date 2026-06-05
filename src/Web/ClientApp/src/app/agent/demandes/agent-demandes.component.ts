@@ -6,15 +6,15 @@ import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
+import { DialogModule } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
 import { catchError, firstValueFrom, of } from 'rxjs';
-import { ChangeDemandeStatusCommand, DemandeDto, DemandesClient, Statut } from '../../web-api-client';
-import { CitoyenDemandesStoreService } from '../../citoyen/services/citoyen-demandes-store.service';
+import { ChangeDemandeStatusCommand, DemandeDto, DemandesClient, DocumentsClient, Statut } from '../../web-api-client';
 
 @Component({
   selector: 'app-agent-demandes',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, ButtonModule, MessageModule, SelectModule, TableModule, TagModule],
+  imports: [CommonModule, FormsModule, RouterModule, ButtonModule, MessageModule, SelectModule, TableModule, TagModule, DialogModule],
   templateUrl: './agent-demandes.component.html'
 })
 export class AgentDemandesComponent implements OnInit {
@@ -24,6 +24,9 @@ export class AgentDemandesComponent implements OnInit {
   errorMessage: string | null = null;
   infoMessage: string | null = null;
   selectedStatus: number | null = null;
+  selectedDemande: DemandeDto | null = null;
+  detailsVisible = false;
+  downloadingDocId: number | null = null;
 
   readonly statusOptions = [
     { label: 'Toutes', value: null },
@@ -35,23 +38,17 @@ export class AgentDemandesComponent implements OnInit {
 
   constructor(
     private readonly demandesClient: DemandesClient,
-    private readonly demandesStore: CitoyenDemandesStoreService
+    private readonly documentsClient: DocumentsClient
   ) {}
 
   async ngOnInit(): Promise<void> {
     try {
-      const ids = this.demandesStore.demandeIds();
+      const page = await firstValueFrom(this.demandesClient.getDemandes(1, 200).pipe(catchError(() => of(null))));
+      this.demandes = page?.items ?? [];
 
-      if (!ids.length) {
-        this.infoMessage = 'Aucune demande connue côté frontend. Ajoutez GET /api/Demandes pour lister toutes les demandes.';
-        this.demandes = [];
-        this.applyFilter();
-        return;
+      if (!this.demandes.length) {
+        this.infoMessage = 'Aucune demande à afficher.';
       }
-
-      this.demandes = (await Promise.all(
-        ids.map((id) => firstValueFrom(this.demandesClient.getDemandeById(id).pipe(catchError(() => of(null)))))
-      )).filter(Boolean) as DemandeDto[];
 
       this.applyFilter();
     } catch {
@@ -68,6 +65,49 @@ export class AgentDemandesComponent implements OnInit {
     }
 
     this.filteredDemandes = this.demandes.filter(d => d.statut === this.selectedStatus);
+  }
+
+  openDetails(demande: DemandeDto): void {
+    this.selectedDemande = demande;
+    this.detailsVisible = true;
+  }
+
+  closeDetails(): void {
+    this.detailsVisible = false;
+    this.selectedDemande = null;
+  }
+
+  async downloadDocument(docId: number | undefined, docNom: string, docType: string): Promise<void> {
+    if (!docId) return;
+
+    try {
+      this.downloadingDocId = docId;
+      const document = await firstValueFrom(this.documentsClient.getDocumentById(docId));
+      if (document && document.contenu) {
+        const byteCharacters = atob(document.contenu);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: docType || 'application/octet-stream' });
+        
+        const url = window.URL.createObjectURL(blob);
+        const a = window.document.createElement('a');
+        a.href = url;
+        a.download = docNom;
+        window.document.body.appendChild(a);
+        a.click();
+        window.document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      } else {
+        alert('Impossible de récupérer le contenu du document.');
+      }
+    } catch (err) {
+      alert('Erreur lors du téléchargement du document.');
+    } finally {
+      this.downloadingDocId = null;
+    }
   }
 
   changeStatus(demande: DemandeDto, status: Statut): void {

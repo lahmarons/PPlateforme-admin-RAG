@@ -6,13 +6,13 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
-import { AdminsClient } from '../../web-api-client';
-import { AdminSessionService } from '../services/admin-session.service';
+import { AppFloatingConfigurator } from '../../layout/component/app.floatingconfigurator';
+import { AuthService } from '../../shared/auth/auth.service';
 
 @Component({
   selector: 'app-admin-connexion',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, InputTextModule, PasswordModule, ButtonModule, MessageModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, InputTextModule, PasswordModule, ButtonModule, MessageModule, AppFloatingConfigurator],
   templateUrl: './admin-connexion.component.html'
 })
 export class AdminConnexionComponent {
@@ -26,12 +26,14 @@ export class AdminConnexionComponent {
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly adminsClient: AdminsClient,
-    private readonly session: AdminSessionService,
+    private readonly authService: AuthService,
     private readonly router: Router
   ) {}
 
-  submit(): void {
+  submit(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+
     if (this.form.invalid || this.submitting) {
       this.form.markAllAsTouched();
       return;
@@ -41,22 +43,13 @@ export class AdminConnexionComponent {
     this.errorMessage = null;
 
     const value = this.form.getRawValue();
-    this.adminsClient.getAdmins().subscribe({
-      next: (admins) => {
-        const admin = admins.find(a => a.email?.toLowerCase() === value.email.toLowerCase());
-
-        if (!admin) {
-          this.errorMessage = 'Aucun administrateur trouvé avec cet email.';
-          this.submitting = false;
-          return;
-        }
-
-        this.session.setConnected(admin);
+    this.authService.login(value.email, value.motDePasse).subscribe({
+      next: (result) => {
         this.submitting = false;
-        this.router.navigate(['/admin/dashboard']);
+        this.router.navigateByUrl(result.redirectUrl);
       },
-      error: () => {
-        this.errorMessage = 'Échec de connexion administrateur.';
+      error: (error) => {
+        this.errorMessage = this.authService.getErrorMessage(error, 'Identifiants invalides. Veuillez réessayer.');
         this.submitting = false;
       }
     });

@@ -35,12 +35,45 @@
               <p-tag [value]="agent.isActive === false ? 'Désactivé' : 'Actif'" [severity]="agent.isActive === false ? 'danger' : 'success'"></p-tag>
             </td>
             <td class="flex gap-2 justify-content-end">
+              <button pButton type="button" icon="pi pi-info-circle" label="Détails" severity="info" (click)="openDetails(agent)"></button>
               <button pButton type="button" icon="pi pi-pencil" label="Modifier" severity="secondary" (click)="openEdit(agent)"></button>
               <button pButton type="button" [icon]="agent.isActive === false ? 'pi pi-check' : 'pi pi-ban'" [label]="agent.isActive === false ? 'Activer' : 'Désactiver'" severity="warn" (click)="toggleActive(agent)"></button>
             </td>
           </tr>
         </ng-template>
       </p-table>
+
+      <p-dialog [(visible)]="detailsVisible" [modal]="true" [style]="{ width: '32rem' }" header="Détails de l’agent" (onHide)="closeDetails()" appendTo="body">
+        <div *ngIf="selectedAgent" class="flex flex-column gap-3">
+          <div class="flex justify-content-between align-items-start gap-3">
+            <div>
+              <h4 class="m-0">{{ selectedAgent.nom }}</h4>
+              <p class="m-0 text-color-secondary">{{ selectedAgent.email }}</p>
+            </div>
+            <p-tag [value]="getStatusLabel(selectedAgent.isActive)" [severity]="selectedAgent.isActive === false ? 'danger' : 'success'"></p-tag>
+          </div>
+
+          <div class="grid grid-cols-12 gap-3">
+            <div class="col-span-12 md:col-span-6 flex flex-column gap-1">
+              <span class="text-color-secondary text-sm">Matricule</span>
+              <strong>{{ selectedAgent.matricule || '-' }}</strong>
+            </div>
+            <div class="col-span-12 md:col-span-6 flex flex-column gap-1">
+              <span class="text-color-secondary text-sm">Grade</span>
+              <strong>{{ selectedAgent.grade || '-' }}</strong>
+            </div>
+            <div class="col-span-12 flex flex-column gap-1">
+              <span class="text-color-secondary text-sm">Service</span>
+              <strong>{{ getServiceName(selectedAgent.serviceId) }}</strong>
+            </div>
+          </div>
+
+          <div class="flex justify-content-end gap-2">
+            <button pButton type="button" severity="secondary" label="Fermer" (click)="closeDetails()"></button>
+            <button pButton type="button" icon="pi pi-pencil" label="Modifier" severity="info" (click)="openEdit(selectedAgent); closeDetails()"></button>
+          </div>
+        </div>
+      </p-dialog>
 
       <p-dialog [(visible)]="dialogVisible" [modal]="true" [style]="{ width: '42rem' }" [header]="editingAgent ? 'Modifier l’agent' : 'Nouvel agent'">
         <form class="grid grid-cols-12 gap-3" [formGroup]="form" (ngSubmit)="save()">
@@ -66,11 +99,11 @@
           </div>
           <div class="col-span-12 md:col-span-6 flex flex-column gap-1">
             <label for="serviceId">Service</label>
-            <p-select id="serviceId" [options]="services" optionLabel="nom" optionValue="id" formControlName="serviceId" placeholder="Affecter à un service"></p-select>
+            <p-select id="serviceId" [options]="services" optionLabel="nom" optionValue="id" formControlName="serviceId" placeholder="Affecter à un service" appendTo="body"></p-select>
           </div>
           <div class="col-span-12 md:col-span-6 flex flex-column gap-1">
             <label for="isActive">Statut du compte</label>
-            <p-select id="isActive" [options]="statusOptions" optionLabel="label" optionValue="value" formControlName="isActive" placeholder="Sélectionner"></p-select>
+            <p-select id="isActive" [options]="statusOptions" optionLabel="label" optionValue="value" formControlName="isActive" placeholder="Sélectionner" appendTo="body"></p-select>
           </div>
           <div class="col-span-12 flex justify-content-end gap-2">
             <button pButton type="button" severity="secondary" label="Annuler" (click)="dialogVisible = false"></button>

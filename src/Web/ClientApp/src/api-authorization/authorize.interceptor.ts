@@ -10,21 +10,22 @@ export class AuthorizeInterceptor implements HttpInterceptor {
   loginUrl: string;
 
   constructor(@Inject('BASE_URL') baseUrl: string) {
-    this.loginUrl = `${baseUrl}Identity/Account/Login`;
+    this.loginUrl = `${baseUrl}connexion`;
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const isAuthRequest = req.url.includes('/api/auth/');
+
     return next.handle(req).pipe(
       catchError(error => {
-        if (error instanceof HttpErrorResponse && error.url?.startsWith(this.loginUrl)) {
-          window.location.href = `${this.loginUrl}?ReturnUrl=${window.location.pathname}`;
+        if (!isAuthRequest && error instanceof HttpErrorResponse && error.status === 401) {
+          window.location.href = `${this.loginUrl}?returnUrl=${window.location.pathname}`;
         }
         return throwError(() => error);
       }),
-      // HACK: As of .NET 8 preview 5, some non-error responses still need to be redirected to login page.
       map((event: HttpEvent<any>) => {
-        if (event instanceof HttpResponse && event.url?.startsWith(this.loginUrl)) {
-          window.location.href = `${this.loginUrl}?ReturnUrl=${window.location.pathname}`;
+        if (!isAuthRequest && event instanceof HttpResponse && event.status === 401) {
+          window.location.href = `${this.loginUrl}?returnUrl=${window.location.pathname}`;
         }
         return event;
       }));

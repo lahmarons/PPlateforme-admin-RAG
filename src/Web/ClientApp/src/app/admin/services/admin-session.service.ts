@@ -1,20 +1,18 @@
 import { Injectable, computed, signal } from '@angular/core';
-import { AdminDto } from '../../web-api-client';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminSessionService {
-  private readonly _admin = signal<AdminDto | null>(null);
+  private readonly _connected = signal(false);
 
-  readonly admin = this._admin.asReadonly();
-  readonly isConnected = computed(() => this._admin() !== null);
+  readonly isConnected = computed(() => this._connected());
 
-  setConnected(admin: AdminDto): void {
-    this._admin.set(admin);
+  markConnected(): void {
+    this._connected.set(true);
   }
 
   clear(): void {
-    this._admin.set(null);
+    this._connected.set(false);
   }
 }

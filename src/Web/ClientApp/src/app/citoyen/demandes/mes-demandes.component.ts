@@ -8,7 +8,6 @@ import { MessageModule } from 'primeng/message';
 import { ButtonModule } from 'primeng/button';
 import { firstValueFrom } from 'rxjs';
 import { DemandesClient, DemandeDto } from '../../web-api-client';
-import { CitoyenDemandesStoreService } from '../services/citoyen-demandes-store.service';
 
 @Component({
   selector: 'app-citoyen-mes-demandes',
@@ -22,21 +21,13 @@ export class MesDemandesComponent implements OnInit {
   errorMessage: string | null = null;
 
   constructor(
-    private readonly demandesClient: DemandesClient,
-    private readonly store: CitoyenDemandesStoreService
+    private readonly demandesClient: DemandesClient
   ) {}
 
   async ngOnInit(): Promise<void> {
-    const ids = this.store.demandeIds();
-
-    if (!ids.length) {
-      this.loading = false;
-      return;
-    }
-
     try {
-      const results = await Promise.all(ids.map((id) => firstValueFrom(this.demandesClient.getDemandeById(id))));
-      this.demandes = results.filter(Boolean) as DemandeDto[];
+      const page = await firstValueFrom(this.demandesClient.getDemandes(1, 100));
+      this.demandes = page?.items ?? [];
     } catch {
       this.errorMessage = 'Impossible de charger les demandes.';
     } finally {

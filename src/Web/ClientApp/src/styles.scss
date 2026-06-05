@@ -13,6 +13,11 @@ html,
 body {
   background: var(--surface-ground) !important;
   color: var(--text-color);
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
 }
 
 .layout-wrapper,
@@ -48,4 +53,142 @@ body {
 .layout-main .p-select,
 .layout-main textarea[pInputTextarea] {
   width: 100%;
+}
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 1.5rem 2rem;
+  background:
+    radial-gradient(circle at top, color-mix(in srgb, var(--primary-color) 6%, transparent), transparent 35%),
+    var(--surface-ground);
+}
+
+.auth-card-shell {
+  position: relative;
+  width: min(100%, 34rem);
+}
+
+.auth-card-shell.auth-card-shell-wide {
+  width: min(100%, 42rem);
+}
+
+.auth-card-accent {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 2.75rem;
+  border: 3px solid var(--primary-color);
+  box-shadow: 0 20px 60px color-mix(in srgb, var(--primary-color) 10%, transparent);
+  transform: translateY(0.5rem);
+  opacity: 0.95;
+  pointer-events: none;
+}
+
+.auth-card {
+  position: relative;
+  background: var(--surface-card);
+  border-radius: 2.75rem;
+  padding: 3.5rem 3rem 3rem;
+  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.08);
+}
+
+.auth-brand {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-brand-icon {
+  width: 3rem;
+  height: 3rem;
+  margin: 0 auto 1rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: var(--primary-color);
+  background: color-mix(in srgb, var(--primary-color) 12%, transparent);
+  font-size: 1.25rem;
+}
+
+.auth-brand h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.auth-brand p {
+  margin: 0.35rem 0 0;
+  color: var(--text-color-secondary);
+  font-size: 0.875rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.auth-form .field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.auth-form label {
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.auth-form input[pInputText],
+.auth-form .p-inputtext,
+.auth-form .p-password,
+.auth-form .p-password-input,
+.auth-form .p-password .p-inputtext {
+  width: 100%;
+}
+
+.auth-submit {
+  width: 100%;
+  justify-content: center;
+}
+
+.auth-link {
+  text-align: center;
+  color: var(--primary-color);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+.auth-floating-configurator {
+  z-index: 1100;
+}
+
+.chatbot-page {
+  min-height: calc(100vh - 8rem);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem 1.5rem 3rem;
+}
+
+.chatbot-card-shell {
+  width: min(100%, 50rem);
+}
+
+.chatbot-card {
+  padding: 2rem;
+  border-radius: 1.5rem;
+}
+
+.chatbot-messages {
+  max-height: 28rem;
+  overflow: auto;
 }

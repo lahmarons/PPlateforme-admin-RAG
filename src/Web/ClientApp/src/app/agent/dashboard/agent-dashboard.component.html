@@ -3,32 +3,79 @@
     <div class="card">
       <div class="flex flex-column gap-1 mb-4">
         <h5 class="m-0">Dashboard agent</h5>
-        <p class="m-0 text-color-secondary">Vue d'ensemble des demandes</p>
+        <p class="m-0 text-color-secondary">Tableau complet des demandes</p>
       </div>
 
       <p-message *ngIf="!session.isConnected()" severity="warn" text="Agent non connecté."></p-message>
       <p-message *ngIf="infoMessage" severity="info" [text]="infoMessage"></p-message>
       <p-message *ngIf="errorMessage" severity="error" [text]="errorMessage"></p-message>
 
-      <div class="grid grid-cols-12 gap-4 mt-2">
-        <div class="col-span-12 md:col-span-6 xl:col-span-3">
-          <div class="surface-card border border-surface rounded-border p-4 flex justify-content-between align-items-center">
-            <span class="text-color-secondary">Demandes en attente</span>
-            <p-tag [value]="demandesEnAttente.toString()" severity="warn"></p-tag>
+      @if (!loading) {
+        <div class="grid grid-cols-12 gap-4 mt-2">
+          <div class="col-span-12 md:col-span-6 xl:col-span-3">
+            <div class="surface-card border border-surface rounded-border p-4 flex justify-content-between align-items-center">
+              <span class="text-color-secondary">Demandes en attente</span>
+              <p-tag [value]="demandesEnAttente.toString()" severity="warn"></p-tag>
+            </div>
+          </div>
+          <div class="col-span-12 md:col-span-6 xl:col-span-3">
+            <div class="surface-card border border-surface rounded-border p-4 flex justify-content-between align-items-center">
+              <span class="text-color-secondary">Demandes traitées</span>
+              <p-tag [value]="demandesTraitees.toString()" severity="success"></p-tag>
+            </div>
+          </div>
+          <div class="col-span-12 md:col-span-6 xl:col-span-3">
+            <div class="surface-card border border-surface rounded-border p-4 flex justify-content-between align-items-center">
+              <span class="text-color-secondary">Total demandes</span>
+              <p-tag [value]="demandes.length.toString()" severity="info"></p-tag>
+            </div>
           </div>
         </div>
-        <div class="col-span-12 md:col-span-6 xl:col-span-3">
-          <div class="surface-card border border-surface rounded-border p-4 flex justify-content-between align-items-center">
-            <span class="text-color-secondary">Demandes traitées</span>
-            <p-tag [value]="demandesTraitees.toString()" severity="success"></p-tag>
-          </div>
-        </div>
-      </div>
 
-      <div class="flex flex-wrap gap-2 mt-4">
-        <a pButton routerLink="/agent/demandes" icon="pi pi-inbox" label="Consulter les demandes"></a>
-        <a pButton routerLink="/agent/chatbot" icon="pi pi-comments" label="Interagir avec le chatbot" severity="secondary"></a>
-      </div>
+        <div class="surface-card border border-surface rounded-border p-4 mt-4">
+          <div class="flex justify-content-between align-items-center mb-3">
+            <div>
+              <h6 class="m-0">Liste des demandes</h6>
+              <p class="m-0 text-color-secondary text-sm">Chargée directement depuis /api/Demandes</p>
+            </div>
+          </div>
+
+          <div class="overflow-auto">
+            <table class="w-full border-collapse">
+              <thead>
+                <tr class="text-left text-color-secondary">
+                  <th class="py-3 border-bottom-1 border-surface">ID</th>
+                  <th class="py-3 border-bottom-1 border-surface">Citoyen</th>
+                  <th class="py-3 border-bottom-1 border-surface">Service</th>
+                  <th class="py-3 border-bottom-1 border-surface">Agent</th>
+                  <th class="py-3 border-bottom-1 border-surface">Statut</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (demande of demandes; track demande.id) {
+                  <tr>
+                    <td class="py-3 border-bottom-1 border-surface">#{{ demande.id }}</td>
+                    <td class="py-3 border-bottom-1 border-surface">{{ demande.citoyenNom }}</td>
+                    <td class="py-3 border-bottom-1 border-surface">{{ demande.serviceNom || '—' }}</td>
+                    <td class="py-3 border-bottom-1 border-surface">{{ demande.agentNom || '—' }}</td>
+                    <td class="py-3 border-bottom-1 border-surface">
+                      <p-tag [value]="demande.statutName" [severity]="statusSeverity(demande.statut)"></p-tag>
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="5" class="py-4 text-center text-color-secondary">Aucune demande disponible.</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-2 mt-4">
+          <a pButton routerLink="/agent/chatbot" icon="pi pi-comments" label="Interagir avec le chatbot" severity="secondary"></a>
+        </div>
+      }
     </div>
   </div>
 </div>

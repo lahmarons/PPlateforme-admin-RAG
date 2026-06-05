@@ -1,23 +1,142 @@
-<div class="grid grid-cols-12 gap-6">
-  <div class="col-span-12">
-    <div class="card">
-      <div class="flex flex-column gap-1 mb-4">
-        <h5 class="m-0">IdaraTech Dashboard</h5>
-        <p class="m-0 text-color-secondary">Sakai-themed frontend integrated with your .NET backend</p>
-      </div>
+<div class="landing-wrapper">
+  <!-- 1. Header Navbar -->
+  <header class="landing-header">
+    <div class="landing-header-container">
+      <a routerLink="/" class="landing-brand">
+        <div class="landing-brand-logo">
+          <i class="pi pi-shield"></i>
+        </div>
+        <h1 class="landing-brand-name">IdaraTech</h1>
+      </a>
+      <nav class="landing-nav-links">
+        <a routerLink="/citoyen/services" class="landing-nav-link">Services</a>
+        <a routerLink="/prestataires" class="landing-nav-link">Prestataires</a>
+        <a routerLink="/citoyen/chatbot" class="landing-nav-link">Chatbot</a>
+        <button pButton type="button" icon="pi pi-sign-in" label="Se connecter" class="p-button-rounded p-button-sm ml-2" (click)="scrollToRoleSelection()"></button>
+      </nav>
+    </div>
+  </header>
 
-      <p class="m-0 text-color-secondary">
-        Use quick actions below to navigate the key pages and verify theme changes (primary color, surface and dark mode).
-      </p>
-
-      <p-divider></p-divider>
-
-      <div class="flex flex-wrap gap-2">
-        <a pButton routerLink="/counter" icon="pi pi-calculator" label="Counter"></a>
-        <a pButton routerLink="/fetch-data" icon="pi pi-cloud" label="Weather" severity="secondary"></a>
-        <a pButton href="/api" target="_blank" rel="noopener noreferrer" icon="pi pi-link" label="API" severity="contrast"></a>
-        <a pButton href="/Identity/Account/Manage" icon="pi pi-user" label="Account" severity="help"></a>
+  <!-- 2. Hero Search Section -->
+  <section class="landing-hero">
+    <div class="hero-circle-1"></div>
+    <div class="hero-circle-2"></div>
+    <div class="landing-hero-content">
+      <span class="landing-hero-eyebrow">Administration Tunisienne Digitale</span>
+      <h2 class="landing-hero-title">Votre portail unique pour toutes vos démarches administratives</h2>
+      <p class="landing-hero-subtitle">Consultez les documents requis, déposez vos dossiers en ligne et suivez leur avancement en temps réel.</p>
+      
+      <div class="landing-search-container">
+        <input type="text" pInputText [(ngModel)]="searchQuery" (keyup.enter)="search()" class="landing-search-input" placeholder="Rechercher un service public, une démarche, un document..." />
+        <button pButton type="button" icon="pi pi-search" label="Rechercher" class="landing-search-btn" (click)="search()"></button>
       </div>
     </div>
-  </div>
+  </section>
+
+  <!-- 3. Service Categories Grid -->
+  <section class="landing-section">
+    <div class="landing-section-container">
+      <div class="landing-section-header">
+        <h3 class="landing-section-title">Comment pouvons-nous vous aider ?</h3>
+        <p class="landing-section-subtitle">Accédez directement aux principales fonctionnalités du portail public</p>
+      </div>
+
+      <div class="grid grid-cols-12 gap-6">
+        <div class="col-span-12 md:col-span-4">
+          <div class="category-card">
+            <div>
+              <div class="category-icon-wrapper category-icon-primary">
+                <i class="pi pi-briefcase"></i>
+              </div>
+              <h4 class="category-title">Services Publics</h4>
+              <p class="category-desc">Consultez la liste complète des services administratifs disponibles et les documents requis pour chaque dossier.</p>
+            </div>
+            <a pButton routerLink="/citoyen/services" label="Consulter les services" icon="pi pi-arrow-right" iconPos="right" severity="secondary" class="w-full"></a>
+          </div>
+        </div>
+
+        <div class="col-span-12 md:col-span-4">
+          <div class="category-card">
+            <div>
+              <div class="category-icon-wrapper category-icon-success">
+                <i class="pi pi-building"></i>
+              </div>
+              <h4 class="category-title">Prestataires de Service</h4>
+              <p class="category-desc">Découvrez la liste des prestataires et partenaires agréés pour vous assister dans vos démarches.</p>
+            </div>
+            <a pButton routerLink="/prestataires" label="Voir la liste" icon="pi pi-arrow-right" iconPos="right" severity="secondary" class="w-full"></a>
+          </div>
+        </div>
+
+        <div class="col-span-12 md:col-span-4">
+          <div class="category-card">
+            <div>
+              <div class="category-icon-wrapper category-icon-info">
+                <i class="pi pi-comments"></i>
+              </div>
+              <h4 class="category-title">Assistant Intelligent IA</h4>
+              <p class="category-desc">Posez vos questions en langage naturel à notre chatbot pour savoir comment obtenir un document ou effectuer une démarche.</p>
+            </div>
+            <a pButton routerLink="/citoyen/chatbot" label="Discuter avec l'IA" icon="pi pi-arrow-right" iconPos="right" severity="secondary" class="w-full"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Role Selection Section -->
+  <section id="role-selection" class="landing-section bg-gradient-to-b from-transparent to-gray-50/50">
+    <div class="landing-section-container">
+      <div class="landing-section-header">
+        <h3 class="landing-section-title">Accéder à votre espace</h3>
+        <p class="landing-section-subtitle">Sélectionnez votre profil d'utilisateur pour vous connecter en toute sécurité</p>
+      </div>
+
+      <div class="role-card-wrapper">
+        <div class="grid grid-cols-12 gap-6">
+          <div class="col-span-12 md:col-span-4">
+            <div class="role-card">
+              <div class="flex flex-column align-items-center">
+                <div class="role-icon"><i class="pi pi-user"></i></div>
+                <h4 class="role-title">Citoyen</h4>
+                <p class="role-desc">Créez votre compte, soumettez des demandes, attachez des documents justificatifs et suivez le traitement de vos dossiers.</p>
+              </div>
+              <a pButton routerLink="/citoyen/connexion" label="Espace Citoyen" icon="pi pi-arrow-right" iconPos="right" class="role-btn"></a>
+            </div>
+          </div>
+
+          <div class="col-span-12 md:col-span-4">
+            <div class="role-card">
+              <div class="flex flex-column align-items-center">
+                <div class="role-icon"><i class="pi pi-briefcase"></i></div>
+                <h4 class="role-title">Agent</h4>
+                <p class="role-desc">Accédez aux dossiers des citoyens, examinez les pièces jointes, validez ou rejetez les demandes selon la réglementation.</p>
+              </div>
+              <a pButton routerLink="/agent/connexion" label="Espace Agent" icon="pi pi-arrow-right" iconPos="right" severity="secondary" class="role-btn"></a>
+            </div>
+          </div>
+
+          <div class="col-span-12 md:col-span-4">
+            <div class="role-card">
+              <div class="flex flex-column align-items-center">
+                <div class="role-icon"><i class="pi pi-building"></i></div>
+                <h4 class="role-title">Administrateur</h4>
+                <p class="role-desc">Gerez la liste des agents publics, configurez les services administratifs disponibles et surveillez l'état général de la plateforme.</p>
+              </div>
+              <a pButton routerLink="/admin/connexion" label="Espace Admin" icon="pi pi-arrow-right" iconPos="right" severity="contrast" class="role-btn"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Footer -->
+  <footer class="landing-footer">
+    <div class="landing-footer-logo">
+      <i class="pi pi-shield" style="color: var(--primary-color);"></i>
+      <span>IdaraTech</span>
+    </div>
+    <p class="landing-footer-text">© 2026 IdaraTech. Portail de modernisation administrative. Inspiré d'Idaraty.tn.</p>
+  </footer>
 </div>

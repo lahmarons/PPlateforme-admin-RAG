@@ -580,6 +580,215 @@ export class AgentsClient implements IAgentsClient {
     }
 }
 
+export interface IAuthClient {
+    postApiAuthLogin(request: LoginRequest): Observable<void>;
+    postApiAuthRegisterCitoyen(request: RegisterCitoyenRequest): Observable<void>;
+    getApiAuthMe(): Observable<AuthResponse>;
+    postApiAuthLogout(): Observable<void>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class AuthClient implements IAuthClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    postApiAuthLogin(request: LoginRequest): Observable<void> {
+        let url_ = this.baseUrl + "/api/auth/login";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPostApiAuthLogin(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPostApiAuthLogin(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processPostApiAuthLogin(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    postApiAuthRegisterCitoyen(request: RegisterCitoyenRequest): Observable<void> {
+        let url_ = this.baseUrl + "/api/auth/register/citoyen";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPostApiAuthRegisterCitoyen(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPostApiAuthRegisterCitoyen(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processPostApiAuthRegisterCitoyen(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getApiAuthMe(): Observable<AuthResponse> {
+        let url_ = this.baseUrl + "/api/auth/me";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetApiAuthMe(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetApiAuthMe(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AuthResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AuthResponse>;
+        }));
+    }
+
+    protected processGetApiAuthMe(response: HttpResponseBase): Observable<AuthResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AuthResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    postApiAuthLogout(): Observable<void> {
+        let url_ = this.baseUrl + "/api/auth/logout";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPostApiAuthLogout(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPostApiAuthLogout(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processPostApiAuthLogout(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
 export interface ICitoyensClient {
     getCitoyens(): Observable<CitoyenDto[]>;
     createCitoyen(command: CreateCitoyenCommand): Observable<number>;
@@ -2449,6 +2658,158 @@ export interface IUpdateAgentCommand {
     serviceId?: number | undefined;
 }
 
+export class LoginRequest implements ILoginRequest {
+    email?: string;
+    password?: string;
+
+    constructor(data?: ILoginRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.email = _data["email"];
+            this.password = _data["password"];
+        }
+    }
+
+    static fromJS(data: any): LoginRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new LoginRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["email"] = this.email;
+        data["password"] = this.password;
+        return data;
+    }
+}
+
+export interface ILoginRequest {
+    email?: string;
+    password?: string;
+}
+
+export class RegisterCitoyenRequest implements IRegisterCitoyenRequest {
+    email?: string;
+    password?: string;
+    nom?: string;
+    adresse?: string;
+    telephone?: string;
+
+    constructor(data?: IRegisterCitoyenRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.email = _data["email"];
+            this.password = _data["password"];
+            this.nom = _data["nom"];
+            this.adresse = _data["adresse"];
+            this.telephone = _data["telephone"];
+        }
+    }
+
+    static fromJS(data: any): RegisterCitoyenRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new RegisterCitoyenRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["email"] = this.email;
+        data["password"] = this.password;
+        data["nom"] = this.nom;
+        data["adresse"] = this.adresse;
+        data["telephone"] = this.telephone;
+        return data;
+    }
+}
+
+export interface IRegisterCitoyenRequest {
+    email?: string;
+    password?: string;
+    nom?: string;
+    adresse?: string;
+    telephone?: string;
+}
+
+export class AuthResponse implements IAuthResponse {
+    userId?: string;
+    userName?: string;
+    roles?: string[];
+    redirectUrl?: string;
+    citoyenId?: number | undefined;
+
+    constructor(data?: IAuthResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userId = _data["userId"];
+            this.userName = _data["userName"];
+            if (Array.isArray(_data["roles"])) {
+                this.roles = [] as any;
+                for (let item of _data["roles"])
+                    this.roles!.push(item);
+            }
+            this.redirectUrl = _data["redirectUrl"];
+            this.citoyenId = _data["citoyenId"];
+        }
+    }
+
+    static fromJS(data: any): AuthResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new AuthResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userId"] = this.userId;
+        data["userName"] = this.userName;
+        if (Array.isArray(this.roles)) {
+            data["roles"] = [];
+            for (let item of this.roles)
+                data["roles"].push(item);
+        }
+        data["redirectUrl"] = this.redirectUrl;
+        data["citoyenId"] = this.citoyenId;
+        return data;
+    }
+}
+
+export interface IAuthResponse {
+    userId?: string;
+    userName?: string;
+    roles?: string[];
+    redirectUrl?: string;
+    citoyenId?: number | undefined;
+}
+
 export class CitoyenDto implements ICitoyenDto {
     id?: number;
     nom?: string;
@@ -2805,6 +3166,7 @@ export class CreateDemandeCommand implements ICreateDemandeCommand {
     citoyenId?: number;
     description?: string;
     serviceId?: number | undefined;
+    documents?: DocumentUploadDto[];
 
     constructor(data?: ICreateDemandeCommand) {
         if (data) {
@@ -2820,6 +3182,11 @@ export class CreateDemandeCommand implements ICreateDemandeCommand {
             this.citoyenId = _data["citoyenId"];
             this.description = _data["description"];
             this.serviceId = _data["serviceId"];
+            if (Array.isArray(_data["documents"])) {
+                this.documents = [] as any;
+                for (let item of _data["documents"])
+                    this.documents!.push(DocumentUploadDto.fromJS(item));
+            }
         }
     }
 
@@ -2835,6 +3202,11 @@ export class CreateDemandeCommand implements ICreateDemandeCommand {
         data["citoyenId"] = this.citoyenId;
         data["description"] = this.description;
         data["serviceId"] = this.serviceId;
+        if (Array.isArray(this.documents)) {
+            data["documents"] = [];
+            for (let item of this.documents)
+                data["documents"].push(item ? item.toJSON() : undefined as any);
+        }
         return data;
     }
 }
@@ -2843,6 +3215,51 @@ export interface ICreateDemandeCommand {
     citoyenId?: number;
     description?: string;
     serviceId?: number | undefined;
+    documents?: DocumentUploadDto[];
+}
+
+export class DocumentUploadDto implements IDocumentUploadDto {
+    nom?: string;
+    type?: string;
+    contenuBase64?: string;
+
+    constructor(data?: IDocumentUploadDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.nom = _data["nom"];
+            this.type = _data["type"];
+            this.contenuBase64 = _data["contenuBase64"];
+        }
+    }
+
+    static fromJS(data: any): DocumentUploadDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DocumentUploadDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["nom"] = this.nom;
+        data["type"] = this.type;
+        data["contenuBase64"] = this.contenuBase64;
+        return data;
+    }
+}
+
+export interface IDocumentUploadDto {
+    nom?: string;
+    type?: string;
+    contenuBase64?: string;
 }
 
 export class UpdateDemandeCommand implements IUpdateDemandeCommand {
@@ -2948,6 +3365,7 @@ export class DocumentDto2 implements IDocumentDto2 {
     id?: number;
     nom?: string;
     type?: string;
+    contenu?: string;
     demandeId?: number;
 
     constructor(data?: IDocumentDto2) {
@@ -2964,6 +3382,7 @@ export class DocumentDto2 implements IDocumentDto2 {
             this.id = _data["id"];
             this.nom = _data["nom"];
             this.type = _data["type"];
+            this.contenu = _data["contenu"];
             this.demandeId = _data["demandeId"];
         }
     }
@@ -2980,6 +3399,7 @@ export class DocumentDto2 implements IDocumentDto2 {
         data["id"] = this.id;
         data["nom"] = this.nom;
         data["type"] = this.type;
+        data["contenu"] = this.contenu;
         data["demandeId"] = this.demandeId;
         return data;
     }
@@ -2989,6 +3409,7 @@ export interface IDocumentDto2 {
     id?: number;
     nom?: string;
     type?: string;
+    contenu?: string;
     demandeId?: number;
 }
 

@@ -7,13 +7,13 @@ import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
-import { CitoyensClient } from '../../web-api-client';
-import { CitoyenSessionService } from '../services/citoyen-session.service';
+import { AppFloatingConfigurator } from '../../layout/component/app.floatingconfigurator';
+import { AuthService } from '../../shared/auth/auth.service';
 
 @Component({
   selector: 'app-citoyen-connexion',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, CardModule, InputTextModule, PasswordModule, ButtonModule, MessageModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, CardModule, InputTextModule, PasswordModule, ButtonModule, MessageModule, AppFloatingConfigurator],
   templateUrl: './connexion.component.html'
 })
 export class ConnexionComponent {
@@ -27,12 +27,14 @@ export class ConnexionComponent {
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly citoyensClient: CitoyensClient,
-    private readonly session: CitoyenSessionService,
+    private readonly authService: AuthService,
     private readonly router: Router
   ) {}
 
-  submit(): void {
+  submit(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+
     if (this.form.invalid || this.submitting) {
       this.form.markAllAsTouched();
       return;
@@ -42,22 +44,13 @@ export class ConnexionComponent {
     this.errorMessage = null;
 
     const value = this.form.getRawValue();
-    this.citoyensClient.getCitoyens().subscribe({
-      next: (citoyens) => {
-        const citoyen = citoyens.find(c => c.email?.toLowerCase() === value.email.toLowerCase());
-
-        if (!citoyen) {
-          this.errorMessage = 'Aucun citoyen trouvé avec cet email.';
-          this.submitting = false;
-          return;
-        }
-
-        this.session.setConnected(citoyen);
+    this.authService.login(value.email, value.motDePasse).subscribe({
+      next: (result) => {
         this.submitting = false;
-        this.router.navigate(['/citoyen/dashboard']);
+        this.router.navigateByUrl(result.redirectUrl);
       },
-      error: () => {
-        this.errorMessage = 'Échec de connexion. Réessayez plus tard.';
+      error: (error) => {
+        this.errorMessage = this.authService.getErrorMessage(error, 'Identifiants invalides. Veuillez réessayer.');
         this.submitting = false;
       }
     });

@@ -32,6 +32,7 @@
             <td><p-tag [value]="demande.statutName || 'Inconnu'" severity="secondary"></p-tag></td>
             <td>
               <div class="flex flex-wrap gap-2">
+                <button pButton type="button" size="small" icon="pi pi-info-circle" label="Plus d'info" severity="secondary" (click)="openDetails(demande)"></button>
                 <button pButton type="button" size="small" icon="pi pi-check" label="Valider" (click)="changeStatus(demande, 2)" severity="success"></button>
                 <button pButton type="button" size="small" icon="pi pi-times" label="Refuser" (click)="changeStatus(demande, 3)" severity="danger"></button>
               </div>
@@ -39,6 +40,51 @@
           </tr>
         </ng-template>
       </p-table>
+
+      <p-dialog [(visible)]="detailsVisible" [modal]="true" [style]="{ width: '34rem' }" header="Détails de la demande" (onHide)="closeDetails()" appendTo="body">
+        <ng-container *ngIf="selectedDemande">
+          <div class="flex flex-column gap-3">
+            <div class="flex align-items-start justify-content-between gap-3">
+              <div>
+                <h4 class="m-0">Demande #{{ selectedDemande.id }}</h4>
+                <p class="m-0 text-color-secondary">{{ selectedDemande.citoyenNom || '-' }}</p>
+              </div>
+              <p-tag [value]="selectedDemande.statutName || 'Inconnu'" severity="secondary"></p-tag>
+            </div>
+
+            <div class="flex flex-column gap-1">
+              <span class="text-color-secondary text-sm">Service</span>
+              <p class="m-0">{{ selectedDemande.serviceNom || '-' }}</p>
+            </div>
+
+            <div class="flex flex-column gap-1">
+              <span class="text-color-secondary text-sm">Description</span>
+              <p class="m-0 white-space-pre-line">{{ selectedDemande.description }}</p>
+            </div>
+
+            <div class="flex flex-column gap-1">
+              <span class="text-color-secondary text-sm">Documents</span>
+              <ng-container *ngIf="selectedDemande.documents?.length; else noDocuments">
+                <ul class="m-0 pl-3">
+                  <li *ngFor="let document of selectedDemande.documents" class="flex justify-content-between align-items-center mb-2 border-bottom border-gray-100 pb-1">
+                    <span>{{ document.nom }} <span class="text-color-secondary">({{ document.type }})</span></span>
+                    <button pButton type="button" size="small" icon="pi pi-download" label="Télécharger" [loading]="downloadingDocId === document.id" class="p-button-text p-button-sm" (click)="downloadDocument(document.id, document.nom, document.type)"></button>
+                  </li>
+                </ul>
+              </ng-container>
+              <ng-template #noDocuments>
+                <p class="m-0">Aucun document attaché.</p>
+              </ng-template>
+            </div>
+
+            <div class="flex justify-content-end gap-2">
+              <button pButton type="button" severity="secondary" label="Fermer" (click)="closeDetails()"></button>
+              <button pButton type="button" icon="pi pi-times" label="Refuser" severity="danger" (click)="changeStatus(selectedDemande, 3)"></button>
+              <button pButton type="button" icon="pi pi-check" label="Valider" severity="success" (click)="changeStatus(selectedDemande, 2)"></button>
+            </div>
+          </div>
+        </ng-container>
+      </p-dialog>
     </div>
   </div>
 </div>

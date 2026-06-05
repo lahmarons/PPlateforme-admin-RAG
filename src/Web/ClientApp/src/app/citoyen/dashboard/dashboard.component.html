@@ -1,24 +1,207 @@
 <div class="grid grid-cols-12 gap-6">
   <div class="col-span-12">
-    <div class="card">
-      <div class="flex flex-column gap-1 mb-4">
-        <h5 class="m-0">Tableau de bord citoyen</h5>
-        <p class="m-0 text-color-secondary">Bienvenue {{ session.citoyen()?.nom || 'citoyen' }}</p>
-      </div>
-
-      <p-message *ngIf="!session.isConnected()" severity="warn" text="Vous n'êtes pas connecté. Certaines actions peuvent être limitées."></p-message>
-
-      <div class="grid grid-cols-12 gap-4 mt-3">
-        <div class="col-span-12 md:col-span-4">
-          <a pButton class="w-full" routerLink="/citoyen/services" label="Services" icon="pi pi-briefcase"></a>
+    <div class="card citoyen-dashboard-shell">
+      <div class="citoyen-dashboard-header">
+        <div>
+          <p class="citoyen-dashboard-eyebrow">IdaraTech • Citoyen</p>
+          <h5 class="m-0">Tableau de bord citoyen</h5>
+          <p class="m-0 text-color-secondary">Vue synthétique de votre profil et de vos demandes en cours</p>
         </div>
-        <div class="col-span-12 md:col-span-4">
-          <a pButton class="w-full" routerLink="/citoyen/demandes" label="Mes demandes" icon="pi pi-inbox" severity="secondary"></a>
-        </div>
-        <div class="col-span-12 md:col-span-4">
-          <a pButton class="w-full" routerLink="/citoyen/chatbot" label="Chatbot" icon="pi pi-comments" severity="contrast"></a>
+        <div class="flex flex-column align-items-end gap-2">
+          <p-tag [value]="session.isConnected() ? 'Connecté' : 'Hors ligne'" [severity]="session.isConnected() ? 'success' : 'danger'"></p-tag>
+          <span class="text-color-secondary text-sm">Bienvenue, {{ session.citoyen()?.userName || 'Citoyen' }}</span>
         </div>
       </div>
+
+      <p-message *ngIf="!session.isConnected()" severity="warn" text="Citoyen non connecté. Veuillez vous connecter."></p-message>
+      <p-message *ngIf="errorMessage" severity="error" [text]="errorMessage"></p-message>
+
+      @if (!loading) {
+        <div class="grid grid-cols-12 gap-4 mt-3">
+          <div class="col-span-12 md:col-span-6 xl:col-span-3">
+            <div class="citoyen-metric-card citoyen-metric-card-primary">
+              <div class="citoyen-metric-icon"><i class="pi pi-folder"></i></div>
+              <div>
+                <span class="citoyen-metric-label">Total Demandes</span>
+                <div class="citoyen-metric-value">{{ totalDemandes }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-span-12 md:col-span-6 xl:col-span-3">
+            <div class="citoyen-metric-card citoyen-metric-card-warn">
+              <div class="citoyen-metric-icon"><i class="pi pi-clock"></i></div>
+              <div>
+                <span class="citoyen-metric-label">En attente</span>
+                <div class="citoyen-metric-value">{{ demandesEnAttente }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-span-12 md:col-span-6 xl:col-span-3">
+            <div class="citoyen-metric-card citoyen-metric-card-info">
+              <div class="citoyen-metric-icon"><i class="pi pi-refresh"></i></div>
+              <div>
+                <span class="citoyen-metric-label">En cours</span>
+                <div class="citoyen-metric-value">{{ demandesEnCours }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-span-12 md:col-span-6 xl:col-span-3">
+            <div class="citoyen-metric-card citoyen-metric-card-success">
+              <div class="citoyen-metric-icon"><i class="pi pi-check-circle"></i></div>
+              <div>
+                <span class="citoyen-metric-label">Traitées</span>
+                <div class="citoyen-metric-value">{{ demandesTraitees }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-12 gap-4 mt-4">
+          <!-- Répartition des demandes (Progress Bars) -->
+          <div class="col-span-12 xl:col-span-8">
+            <div class="surface-card border border-surface rounded-border p-4 h-full">
+              <div class="flex justify-content-between align-items-center mb-4">
+                <div>
+                  <h6 class="m-0">Répartition des demandes</h6>
+                  <p class="m-0 text-color-secondary text-sm">Progression et statuts de vos requêtes</p>
+                </div>
+                <p-tag [value]="totalDemandes.toString() + ' demandes'" severity="info"></p-tag>
+              </div>
+
+              <div class="flex flex-column gap-4">
+                <div>
+                  <div class="flex justify-content-between mb-2">
+                    <span>En attente</span>
+                    <strong>{{ demandesEnAttente }} ({{ demandePendingRate }}%)</strong>
+                  </div>
+                  <p-progressBar [value]="demandePendingRate" [showValue]="false"></p-progressBar>
+                </div>
+
+                <div>
+                  <div class="flex justify-content-between mb-2">
+                    <span>En cours</span>
+                    <strong>{{ demandesEnCours }} ({{ demandeEnCoursRate }}%)</strong>
+                  </div>
+                  <p-progressBar [value]="demandeEnCoursRate" [showValue]="false"></p-progressBar>
+                </div>
+
+                <div>
+                  <div class="flex justify-content-between mb-2">
+                    <span>Traitées</span>
+                    <strong>{{ demandesTraitees }} ({{ demandeProcessedRate }}%)</strong>
+                  </div>
+                  <p-progressBar [value]="demandeProcessedRate" [showValue]="false"></p-progressBar>
+                </div>
+
+                <div>
+                  <div class="flex justify-content-between mb-2">
+                    <span>Refusées</span>
+                    <strong>{{ demandesRefusees }} ({{ demandeRefusedRate }}%)</strong>
+                  </div>
+                  <p-progressBar [value]="demandeRefusedRate" [showValue]="false"></p-progressBar>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Demandes par Service (Comparative Bars) -->
+          <div class="col-span-12 xl:col-span-4">
+            <div class="surface-card border border-surface rounded-border p-4 h-full">
+              <div class="mb-3">
+                <h6 class="m-0">Demandes par Service</h6>
+                <p class="m-0 text-color-secondary text-sm">Répartition par type de service</p>
+              </div>
+
+              @if (totalDemandes > 0) {
+                <div class="citoyen-entity-bars mt-4">
+                  @for (service of servicesBreakdown; track service.nom) {
+                    <div class="citoyen-entity-bar-row">
+                      <span class="truncate text-sm font-medium" [title]="service.nom">{{ service.nom }}</span>
+                      <div class="citoyen-entity-bar">
+                        <span [style.width]="service.rate + '%'"></span>
+                      </div>
+                      <strong class="text-sm">{{ service.count }}</strong>
+                    </div>
+                  }
+                </div>
+              } @else {
+                <div class="text-color-secondary text-sm py-5 text-center flex flex-column align-items-center justify-content-center h-full min-h-12">
+                  <i class="pi pi-server text-3xl mb-2 text-gray-300"></i>
+                  <span>Aucune demande enregistrée</span>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-12 gap-4 mt-4">
+          <!-- Recent Demands List -->
+          <div class="col-span-12 lg:col-span-8">
+            <div class="surface-card border border-surface rounded-border p-4 h-full">
+              <div class="flex justify-content-between align-items-center mb-3">
+                <div>
+                  <h6 class="m-0">Demandes récentes</h6>
+                  <p class="m-0 text-color-secondary text-sm">Vos 5 dernières requêtes créées</p>
+                </div>
+                <a pButton routerLink="/citoyen/demandes" label="Voir tout" icon="pi pi-arrow-right" iconPos="right" severity="secondary" size="small" class="p-button-text"></a>
+              </div>
+
+              @if (!recentDemandes.length) {
+                <div class="text-center p-5 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                  <i class="pi pi-inbox text-3xl text-gray-300 mb-2 block"></i>
+                  <p class="text-color-secondary mb-3 text-sm">Aucune demande enregistrée.</p>
+                  <a pButton routerLink="/citoyen/demandes/nouvelle" icon="pi pi-plus" label="Créer une demande" class="p-button-sm"></a>
+                </div>
+              } @else {
+                <p-table [value]="recentDemandes" responsiveLayout="scroll" styleClass="p-datatable-sm">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>ID</th>
+                      <th>Service</th>
+                      <th>Description</th>
+                      <th style="width: 120px;">Statut</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-demande>
+                    <tr class="hover:bg-gray-50/50 transition-colors duration-150">
+                      <td class="font-semibold text-gray-600">#{{ demande.id }}</td>
+                      <td>
+                        <span class="font-medium text-gray-800 text-sm">{{ demande.serviceNom || 'Sans service' }}</span>
+                      </td>
+                      <td class="text-color-secondary text-sm max-w-xs truncate">{{ demande.description }}</td>
+                      <td>
+                        <p-tag [value]="demande.statutName || 'En attente'" [severity]="getStatusSeverity(demande.statut)"></p-tag>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              }
+            </div>
+          </div>
+
+          <!-- Quick Access Actions -->
+          <div class="col-span-12 lg:col-span-4">
+            <div class="surface-card border border-surface rounded-border p-4 h-full flex flex-column justify-content-between">
+              <div>
+                <h6 class="m-0 mb-3">Accès rapides</h6>
+                <p class="m-0 text-color-secondary text-sm mb-4">Actions les plus utilisées</p>
+                
+                <div class="flex flex-column gap-2">
+                  <a pButton routerLink="/citoyen/demandes/nouvelle" icon="pi pi-plus" label="Créer une demande" class="w-full"></a>
+                  <a pButton routerLink="/citoyen/services" icon="pi pi-briefcase" label="Services administratifs" severity="secondary" class="w-full"></a>
+                  <a pButton routerLink="/citoyen/chatbot" icon="pi pi-comments" label="Assistant chatbot" severity="info" class="w-full"></a>
+                </div>
+              </div>
+
+              <div class="mt-4 p-3 bg-gray-50 border border-gray-100 rounded-xl text-center flex flex-column align-items-center">
+                <i class="pi pi-shield text-indigo-600 text-lg mb-1.5"></i>
+                <span class="text-[10px] font-semibold text-gray-700 block mb-0.5">Espace Sécurisé</span>
+                <p class="text-[9px] text-color-secondary m-0">Vos données personnelles et documents sont protégés par la réglementation.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
     </div>
   </div>
 </div>

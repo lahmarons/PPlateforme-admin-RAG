@@ -51,11 +51,11 @@
           </div>
           <div class="flex flex-column gap-1">
             <label for="isActive">Statut</label>
-            <p-select id="isActive" [options]="statusOptions" optionLabel="label" optionValue="value" formControlName="isActive" placeholder="Sélectionner"></p-select>
+            <p-select id="isActive" [options]="statusOptions" optionLabel="label" optionValue="value" formControlName="isActive" placeholder="Sélectionner" appendTo="body"></p-select>
           </div>
           <div class="flex flex-column gap-1">
             <label for="prestataireId">Prestataire</label>
-            <p-select id="prestataireId" [options]="prestataires" optionLabel="nom" optionValue="id" formControlName="prestataireId" placeholder="Sélectionner un prestataire"></p-select>
+            <p-select id="prestataireId" [options]="prestataires" optionLabel="nom" optionValue="id" formControlName="prestataireId" placeholder="Sélectionner un prestataire" appendTo="body"></p-select>
           </div>
           <div class="flex justify-content-end gap-2">
             <button pButton type="button" severity="secondary" label="Annuler" (click)="dialogVisible = false"></button>

@@ -1,5 +1,5 @@
-<div class="grid grid-cols-12 gap-6">
-  <div class="col-span-12 lg:col-span-8 xl:col-span-6">
+<div class="flex justify-content-center">
+  <div class="w-full" style="max-width: 48rem;">
     <div class="card">
       <div class="flex flex-column gap-1 mb-4">
         <h5 class="m-0">Créer une demande</h5>
@@ -15,6 +15,24 @@
         <div class="flex flex-column gap-1">
           <label for="description">Description</label>
           <textarea id="description" pInputTextarea formControlName="description" rows="5"></textarea>
+        </div>
+
+        <div class="flex flex-column gap-2">
+          <label for="documents">Documents nécessaires</label>
+          <input #documentsInput id="documents" type="file" class="hidden" multiple (change)="onDocumentsSelected($event)" />
+          <button pButton type="button" severity="secondary" icon="pi pi-paperclip" label="Attacher les documents nécessaires" (click)="openDocumentPicker(documentsInput)"></button>
+
+          <ng-container *ngIf="attachedDocuments.length > 0">
+            <div class="flex flex-column gap-2 mt-2">
+              <div *ngFor="let file of attachedDocuments; let i = index" class="flex align-items-center justify-content-between gap-2 surface-card border border-surface rounded-border px-3 py-2">
+                <div class="flex align-items-center gap-2 min-w-0">
+                  <i class="pi pi-file text-color-secondary"></i>
+                  <span class="text-sm text-overflow-ellipsis overflow-hidden white-space-nowrap">{{ file.name }}</span>
+                </div>
+                <button pButton type="button" icon="pi pi-times" severity="secondary" text="true" rounded="true" (click)="removeDocument(i)"></button>
+              </div>
+            </div>
+          </ng-container>
         </div>
 
         <p-message *ngIf="errorMessage" severity="error" [text]="errorMessage"></p-message>
