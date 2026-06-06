@@ -1,0 +1,26 @@
+<div class="input-container">
+  <div class="input-wrapper">
+    <textarea
+      #inputField
+      [(ngModel)]="message"
+      (keydown)="onKeyPress($event)"
+      (wheel)="onWheel($event)"
+      [placeholder]="getPlaceholder()"
+      class="input-field"
+      rows="1"
+      aria-label="Message input"
+    >
+    </textarea>
+    <button
+      (click)="onSend()"
+      [disabled]="!message.trim()"
+      class="send-button"
+      [attr.aria-label]="getSendButtonText()"
+    >
+      <span class="send-icon">➤</span>
+    </button>
+  </div>
+  <p class="input-hint">
+    Entrée pour envoyer · Shift+Entrée pour nouvelle ligne
+  </p>
+</div>

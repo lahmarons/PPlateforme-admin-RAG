@@ -1,0 +1,126 @@
+PROCÉDURES ADMINISTRATIVES TUNISIENNES — EMPLOI ET ENTREPRENEURIAT
+Source : ANETI, Ministère de l'Emploi, API Tunisie
+
+=============================================================
+1. DEMANDE D'EMPLOI — ANETI
+=============================================================
+
+L'ANETI (Agence Nationale pour l'Emploi et le Travail Indépendant) est l'organisme public qui accompagne les demandeurs d'emploi.
+
+INSCRIPTION COMME DEMANDEUR D'EMPLOI :
+
+Documents requis :
+- CIN valide
+- CV à jour
+- Diplômes et attestations de travail
+- Photo d'identité
+
+Lieu d'inscription :
+- Bureau régional ANETI le plus proche
+- En ligne : www.emploi.nat.tn
+
+Services offerts par l'ANETI :
+- Aide à la recherche d'emploi
+- Formation professionnelle
+- Aide à la création d'entreprise
+- Programme Amal (allocation mensuelle de 200 dinars pour diplômés chômeurs)
+
+PROGRAMME AMAL :
+Conditions :
+- Être diplômé de l'enseignement supérieur
+- Être en situation de chômage depuis au moins 3 mois
+- Ne pas dépasser 35 ans
+Montant : 200 dinars par mois pendant 12 mois maximum
+
+=============================================================
+2. CONTRAT DE TRAVAIL
+=============================================================
+
+TYPES DE CONTRATS EN TUNISIE :
+- CDI (Contrat à Durée Indéterminée) : contrat principal
+- CDD (Contrat à Durée Déterminée) : limité à 4 ans maximum
+- SIVP (Stage d'Initiation à la Vie Professionnelle) : pour les primo-demandeurs d'emploi
+
+SIVP — Stage d'Initiation à la Vie Professionnelle :
+Conditions :
+- Être diplômé de l'enseignement supérieur (bac+2 minimum)
+- Chercher son premier emploi
+- Avoir moins de 25 ans (ou 30 ans pour certains diplômés)
+Durée : 12 mois maximum
+Rémunération : au moins 1 SMIG
+
+Documents pour un SIVP :
+- CIN
+- Diplôme
+- CV
+- Fiche d'inscription à l'ANETI
+- Convention SIVP signée par l'employeur et l'ANETI
+
+=============================================================
+3. CRÉATION D'ENTREPRISE
+=============================================================
+
+GUICHET UNIQUE (API — Agence de Promotion de l'Industrie et de l'Innovation) :
+
+Étapes de création :
+1. Choisir la forme juridique (SARL, SA, EI, etc.)
+2. Déposer le dossier au guichet unique API
+3. Obtenir le certificat de dépôt
+4. Inscription au registre du commerce (Tribunal de Première Instance)
+5. Obtenir la patente fiscale (Recette des Finances)
+6. Ouverture du compte bancaire professionnel
+7. Affiliation CNSS
+
+Documents requis pour SARL :
+- Statuts de la société (notariés si capital > 50 000 DT)
+- CIN des associés
+- Attestation de dépôt du capital (banque)
+- Acte de location des locaux
+- Formulaire de déclaration (API)
+
+Capital minimum :
+- SARL : 1 dinar symbolique (depuis la réforme 2021)
+- SA : 5 000 dinars minimum
+
+Délai de création : 3 à 7 jours ouvrables via le guichet unique
+
+Contact API :
+- Site : www.tunisieindustrie.nat.tn
+- Téléphone : 71 771 144
+
+=============================================================
+4. PATENTE ET FISCALITÉ
+=============================================================
+
+DÉCLARATION DE L'IMPÔT :
+- Personnes physiques : avant le 25 février de chaque année
+- Personnes morales : dans les 3 mois suivant la clôture de l'exercice
+
+TVA :
+- Taux normal : 19%
+- Taux réduit : 13% et 7% selon les activités
+- Franchise TVA si chiffre d'affaires < 50 000 DT/an
+
+RECETTE DES FINANCES :
+- Délivrance de la patente
+- Déclaration et paiement des impôts
+- Site : www.finances.gov.tn
+
+=============================================================
+5. CHÔMAGE ET INDEMNISATION
+=============================================================
+
+CONDITIONS POUR L'INDEMNISATION CHÔMAGE :
+- Avoir cotisé à la CNSS pendant au moins 80 jours dans les 12 derniers mois
+- Être involontairement au chômage (licenciement économique)
+- S'inscrire à l'ANETI dans les 30 jours suivant la fin du contrat
+
+Durée d'indemnisation :
+- Maximum 182 jours (6 mois)
+- Montant : 67% du salaire journalier moyen plafonné
+
+Documents requis :
+- Attestation de fin de travail (employeur)
+- CIN
+- Relevé de compte bancaire
+- Inscription à l'ANETI

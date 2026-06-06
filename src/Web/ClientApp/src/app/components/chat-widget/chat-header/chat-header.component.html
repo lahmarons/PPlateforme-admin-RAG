@@ -1,0 +1,23 @@
+<div class="chat-header">
+  <div class="header-left">
+    <div class="avatar-wrap">
+      <img src="assets/assitant.png" alt="IDARATECH" class="header-avatar" />
+      <span class="online-dot"></span>
+    </div>
+    <div class="header-text">
+      <h2 class="header-title">IDARATECH</h2>
+      <p class="header-sub">Conseiller Administratif Tunisien</p>
+      <span class="header-status">● EN LIGNE</span>
+    </div>
+  </div>
+
+  <div class="header-right">
+    <div class="lang-btns">
+      <button class="lang-btn" [class.lang-active]="(currentLanguage$ | async) === 'fr'" (click)="onLanguageChange('fr')">FR</button>
+      <button class="lang-btn" [class.lang-active]="(currentLanguage$ | async) === 'ar'" (click)="onLanguageChange('ar')">AR</button>
+      <button class="lang-btn" [class.lang-active]="(currentLanguage$ | async) === 'tn'" (click)="onLanguageChange('tn')">TN</button>
+    </div>
+    <button class="clear-btn" (click)="onClearClick()" title="Effacer la conversation">🗑️</button>
+    <button class="close-btn" (click)="onCloseWidget()">✕</button>
+  </div>
+</div>

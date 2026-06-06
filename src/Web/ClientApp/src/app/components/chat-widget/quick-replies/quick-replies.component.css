@@ -1,0 +1,39 @@
+/* quick-replies.component.css */
+.quick-replies-container {
+  padding: 8px 10px;
+  background: white;
+  border-top: 1px solid #f0e0e0;
+  flex-shrink: 0; /* ✅ Ne se compresse jamais */
+}
+.quick-replies-label {
+  display: block;
+  font-size: 0.62rem;
+  color: #bdc3c7;
+  margin-bottom: 5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.quick-replies-grid {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.quick-reply-btn {
+  background: white;
+  border: 1.5px solid #f0d0d0;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 0.73rem;
+  color: #c0392b;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.quick-reply-btn:hover {
+  background: #c0392b;
+  color: white;
+  border-color: #c0392b;
+}

@@ -1,0 +1,44 @@
+<div class="messages-container" #messagesContainer>
+  <div *ngIf="!messages || messages.length === 0" class="empty-state">
+    <p class="empty-text">Posez votre première question...</p>
+  </div>
+
+  <div
+    *ngFor="let message of messages"
+    class="message-item"
+    [class.message-user]="message.sender === 'user'"
+    [class.message-bot]="message.sender === 'bot'"
+  >
+    <img
+      *ngIf="message.sender === 'bot'"
+      src="assets/assitant.png"
+      alt="IDARATECH"
+      class="bot-avatar"
+    />
+
+    <div
+      [class]="
+        message.sender === 'user' ? 'message-bubble-user' : 'message-bubble-bot'
+      "
+    >
+      <div *ngIf="!message.isTyping" class="message-text">
+        {{ message.text }}
+      </div>
+      <div *ngIf="message.isTyping" class="typing-indicator">
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+      </div>
+      <span class="message-time">{{ message.timestamp | date: "HH:mm" }}</span>
+    </div>
+  </div>
+</div>
+
+<!-- Bouton pour accéder aux nouveaux messages si l'utilisateur est monté -->
+<button
+  class="new-messages-btn"
+  *ngIf="showNewMessages"
+  (click)="scrollToBottom()"
+>
+  Nouveaux messages
+</button>

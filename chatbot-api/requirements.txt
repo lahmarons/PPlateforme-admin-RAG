@@ -1,0 +1,34 @@
+# ============================================================
+# IDARATECH Chatbot — Requirements
+# Architecture RAG : FastAPI + Ollama + FAISS + Sentence Transformers
+# Conforme au Chapitre 4 du rapport PFA
+# ============================================================
+
+# === Backend API ===
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+python-dotenv==1.0.1
+pydantic==2.7.1
+python-multipart==0.0.9
+httpx==0.27.0
+
+# === RAG / Embeddings ===
+sentence-transformers==3.0.1     # Sentence Transformers (Chapitre 4.4.2)
+faiss-cpu>=1.9.0                  # FAISS Vector Store (Chapitre 4.4.2)
+langchain==0.2.3                  # RAG orchestration
+langchain-community==0.2.3
+
+# === Document Processing ===
+pypdf==4.2.0                      # Lecture PDF
+python-docx==1.1.2                # Lecture DOCX
+
+# === Database ===
+sqlalchemy==2.0.30
+aiosqlite==0.20.0
+
+# === Ollama (Mistral local) ===
+ollama==0.3.0                     # Client Ollama (Chapitre 4.4.2)
+
+# === Utils ===
+numpy==1.26.4
+pandas==2.2.2

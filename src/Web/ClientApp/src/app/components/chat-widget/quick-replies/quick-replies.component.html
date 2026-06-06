@@ -1,0 +1,11 @@
+<div class="quick-replies-container">
+  <label class="quick-replies-label">{{ getLabel() }}</label>
+  <div class="quick-replies-grid">
+    <button
+      *ngFor="let reply of quickReplies"
+      (click)="onReplyClick(reply)"
+      class="quick-reply-btn">
+      {{ reply.text }}
+    </button>
+  </div>
+</div>

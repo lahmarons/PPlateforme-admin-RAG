@@ -1,100 +1,54 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewChecked, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { ChatService, Message, QuickReply, Language } from '../../services/chat.service';
-import { Subscription } from 'rxjs';
+import { ChatService, Message } from '../../services/chat.service';
+import { LanguageService } from '../../services/language.service';
+import { ChatHeaderComponent } from './chat-header/chat-header.component';
+import { ChatMessagesComponent } from './chat-messages/chat-messages.component';
+import { ChatInputComponent } from './chat-input/chat-input.component';
+import { QuickRepliesComponent } from './quick-replies/quick-replies.component';
 
 @Component({
   selector: 'app-chat-widget',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    ChatHeaderComponent,
+    ChatMessagesComponent,
+    ChatInputComponent,
+    QuickRepliesComponent
+  ],
   templateUrl: './chat-widget.component.html',
-  styleUrls: ['./chat-widget.component.scss']
+  styleUrls: ['./chat-widget.component.css']
 })
-export class ChatWidgetComponent implements OnInit, OnDestroy, AfterViewChecked {
-  private chatService = inject(ChatService);
+export class ChatWidgetComponent implements OnInit {
+  messages$  = this.chatService.messages$;
+  isLoading$ = this.chatService.isLoading$;
+  isOpen     = false;  // Fermé par défaut — bouton FAB en bas
 
-  @ViewChild('messageScrollContainer') private scrollContainer!: ElementRef;
+  constructor(
+    private chatService: ChatService,
+    private languageService: LanguageService
+  ) {}
 
-  isOpen = false;
-  messageText = '';
-  messages: Message[] = [];
-  isLoading = false;
-  currentLang: Language = 'fr';
-  quickReplies: QuickReply[] = [];
+  ngOnInit(): void {}
 
-  private subscriptions = new Subscription();
-
-  ngOnInit(): void {
-    // Subscribe to message stream
-    this.subscriptions.add(
-      this.chatService.messages$.subscribe(msgs => {
-        this.messages = msgs;
-        this.scrollToBottom();
-      })
-    );
-
-    // Subscribe to loading state
-    this.subscriptions.add(
-      this.chatService.isLoading$.subscribe(loading => {
-        this.isLoading = loading;
-        this.scrollToBottom();
-      })
-    );
-
-    // Subscribe to language changes
-    this.subscriptions.add(
-      this.chatService.language$.subscribe(lang => {
-        this.currentLang = lang;
-        this.quickReplies = this.chatService.getQuickReplies(lang);
-      })
-    );
+  onSendMessage(message: string): void {
+    if (message.trim()) this.chatService.addUserMessage(message);
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  }
-
-  ngAfterViewChecked(): void {
-    this.scrollToBottom();
+  onQuickReplyClick(reply: string): void {
+    if (reply.trim()) this.chatService.addUserMessage(reply);
   }
 
   toggleChat(): void {
     this.isOpen = !this.isOpen;
-    if (this.isOpen) {
-      this.scrollToBottom();
-    }
   }
 
-  sendMessage(): void {
-    const text = this.messageText.trim();
-    if (!text) return;
-
-    this.chatService.addUserMessage(text);
-    this.messageText = '';
+  onClearChat(): void {
+    this.chatService.clearMessages();
   }
 
-  selectQuickReply(reply: QuickReply): void {
-    this.chatService.addUserMessage(reply.text);
-  }
-
-  changeLanguage(lang: Language): void {
-    this.chatService.changeLanguage(lang);
-  }
-
-  clearChat(): void {
-    if (confirm('Voulez-vous vraiment effacer la conversation ? / هل تريد حقاً مسح المحادثة؟')) {
-      this.chatService.clearMessages();
-    }
-  }
-
-  private scrollToBottom(): void {
-    try {
-      if (this.scrollContainer) {
-        this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
-      }
-    } catch (err) {
-      // Ignore scroll errors
-    }
+  isRTL(): boolean {
+    return this.languageService.isRTL();
   }
 }

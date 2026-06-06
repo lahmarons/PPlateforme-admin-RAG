@@ -1,110 +1,26 @@
-<!-- Floating Chat Widget -->
-<div class="idaratech-chat-widget" [ngClass]="{ 'is-open': isOpen }">
-
-  <!-- Chat Window -->
-  <div class="chat-window-card" *ngIf="isOpen" [attr.dir]="(currentLang === 'ar' || currentLang === 'tn') ? 'rtl' : 'ltr'">
-    
-    <!-- Chat Header -->
-    <div class="chat-header">
-      <div class="header-info">
-        <div class="avatar-ring">
-          <div class="bot-avatar">🤖</div>
-          <span class="status-dot online"></span>
-        </div>
-        <div>
-          <h4 class="title">IDARATECH AI</h4>
-          <span class="subtitle">
-            {{ currentLang === 'fr' ? 'Conseiller Tunisien' : 'المستشار التونسي' }}
-          </span>
-        </div>
-      </div>
-      
-      <div class="header-actions">
-        <!-- Language Selector -->
-        <div class="lang-selector">
-          <button (click)="changeLanguage('fr')" [ngClass]="{ 'active': currentLang === 'fr' }">FR</button>
-          <button (click)="changeLanguage('ar')" [ngClass]="{ 'active': currentLang === 'ar' }">عربي</button>
-          <button (click)="changeLanguage('tn')" [ngClass]="{ 'active': currentLang === 'tn' }">دارجة</button>
-        </div>
-        
-        <!-- Clear History -->
-        <button class="icon-btn" (click)="clearChat()" title="Effacer la conversation">
-          🗑️
-        </button>
-        
-        <!-- Minimize -->
-        <button class="icon-btn close-btn" (click)="toggleChat()">
-          ✕
-        </button>
-      </div>
-    </div>
-
-    <!-- Chat Messages Body -->
-    <div class="chat-messages-body" #messageScrollContainer>
-      <div class="messages-list">
-        
-        <div *ngFor="let msg of messages" class="message-wrapper" 
-             [ngClass]="{ 'user-message': msg.sender === 'user', 'bot-message': msg.sender === 'bot' }">
-          
-          <div class="message-bubble" [ngClass]="{ 'typing': msg.isTyping }">
-            <!-- Normal Message -->
-            <ng-container *ngIf="!msg.isTyping">
-              <span class="message-text">{{ msg.text }}</span>
-              <span class="message-time">{{ msg.timestamp | date:'HH:mm' }}</span>
-            </ng-container>
-
-            <!-- Typing Indicator -->
-            <ng-container *ngIf="msg.isTyping">
-              <div class="typing-indicator">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-            </ng-container>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Quick Replies & Footer -->
-    <div class="chat-footer">
-      <!-- Horizontal Scrollable Quick Replies -->
-      <div class="quick-replies-container" *ngIf="quickReplies.length > 0 && !isLoading">
-        <div class="quick-replies-list">
-          <button *ngFor="let reply of quickReplies" 
-                  (click)="selectQuickReply(reply)" 
-                  class="quick-reply-pill">
-            {{ reply.text }}
-          </button>
-        </div>
-      </div>
-
-      <!-- Message Input Form -->
-      <div class="input-form">
-        <input type="text" 
-               [(ngModel)]="messageText" 
-               (keyup.enter)="sendMessage()"
-               [placeholder]="currentLang === 'fr' ? 'Écrivez votre message...' : 'اكتب رسالتك هنا...'"
-               [disabled]="isLoading"
-               class="message-input" />
-               
-        <button (click)="sendMessage()" 
-                [disabled]="!messageText.trim() || isLoading" 
-                class="send-btn">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-          </svg>
-        </button>
-      </div>
-    </div>
-
+<div class="chat-container">
+  <!-- ══ BADGE FAB (fermé) ══════════════════════════════ -->
+  <div *ngIf="!isOpen" class="chat-badge" (click)="toggleChat()">
+    <img src="assets/assitant.png" alt="IDARATECH" class="badge-avatar" />
+    <span class="badge-pulse"></span>
+    <span class="badge-notif">1</span>
   </div>
 
-  <!-- Floating Toggle Button -->
-  <button class="chat-toggle-btn" (click)="toggleChat()" [ngClass]="{ 'pulse-animation': !isOpen }">
-    <span class="toggle-icon" *ngIf="!isOpen">💬</span>
-    <span class="toggle-icon font-sans" *ngIf="isOpen">✕</span>
-  </button>
+  <!-- ══ WIDGET (ouvert) ═══════════════════════════════ -->
+  <div *ngIf="isOpen" class="chat-widget" [class.rtl]="isRTL()">
+    <app-chat-header (onClearChat)="onClearChat()" (onCloseChat)="toggleChat()">
+    </app-chat-header>
 
+    <app-chat-messages
+      [messages]="messages$ | async"
+      [isLoading]="isLoading$ | async"
+    >
+    </app-chat-messages>
+
+    <app-quick-replies
+      (onQuickReplyClick)="onQuickReplyClick($event)"
+    ></app-quick-replies>
+
+    <app-chat-input (onSendMessage)="onSendMessage($event)"></app-chat-input>
+  </div>
 </div>
