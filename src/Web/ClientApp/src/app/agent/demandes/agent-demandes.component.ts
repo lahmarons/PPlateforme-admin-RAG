@@ -90,12 +90,46 @@ export class AgentDemandesComponent implements OnInit {
           byteNumbers[i] = byteCharacters.charCodeAt(i);
         }
         const byteArray = new Uint8Array(byteNumbers);
-        const blob = new Blob([byteArray], { type: docType || 'application/octet-stream' });
         
+        // Ensure proper MIME type and filename extension
+        let mimeType = docType || 'application/octet-stream';
+        let extension = '';
+        
+        if (docType) {
+          const typeLower = docType.toLowerCase();
+          if (typeLower === 'pdf' || typeLower === 'application/pdf') {
+            mimeType = 'application/pdf';
+            extension = '.pdf';
+          } else if (typeLower === 'png' || typeLower === 'image/png') {
+            mimeType = 'image/png';
+            extension = '.png';
+          } else if (typeLower === 'jpg' || typeLower === 'jpeg' || typeLower === 'image/jpeg') {
+            mimeType = 'image/jpeg';
+            extension = '.jpg';
+          } else if (typeLower === 'docx' || typeLower === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+            mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+            extension = '.docx';
+          } else if (typeLower === 'doc' || typeLower === 'application/msword') {
+            mimeType = 'application/msword';
+            extension = '.doc';
+          } else if (typeLower === 'txt' || typeLower === 'text/plain') {
+            mimeType = 'text/plain';
+            extension = '.txt';
+          }
+        }
+
+        const blob = new Blob([byteArray], { type: mimeType });
         const url = window.URL.createObjectURL(blob);
         const a = window.document.createElement('a');
         a.href = url;
-        a.download = docNom;
+        
+        // Add extension to filename if it's missing
+        let filename = docNom || 'document';
+        if (extension && !filename.toLowerCase().endsWith(extension)) {
+          filename += extension;
+        }
+        
+        a.download = filename;
         window.document.body.appendChild(a);
         a.click();
         window.document.body.removeChild(a);

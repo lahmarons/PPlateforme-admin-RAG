@@ -1,6 +1,6 @@
 import { Component, computed, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { AppMenuitem } from './app.menuitem';
 import { AuthService } from '../../shared/auth/auth.service';
@@ -21,6 +21,13 @@ import { AuthService } from '../../shared/auth/auth.service';
 })
 export class AppMenu implements OnInit {
     private readonly authService = inject(AuthService);
+    private readonly router = inject(Router);
+
+    logout() {
+        this.authService.logout().subscribe(() => {
+            this.router.navigate(['/connexion']);
+        });
+    }
 
     model = computed<MenuItem[]>(() => {
         const user = this.authService.currentUser();
@@ -86,6 +93,15 @@ export class AppMenu implements OnInit {
                     { label: 'Services', icon: 'pi pi-fw pi-briefcase', routerLink: ['/admin/services'] },
                     { label: 'Agents', icon: 'pi pi-fw pi-users', routerLink: ['/admin/agents'] },
                     { label: 'Prestataires', icon: 'pi pi-fw pi-building', routerLink: ['/admin/prestataires'] }
+                ]
+            });
+        }
+
+        if (user) {
+            menu.push({
+                label: 'Compte',
+                items: [
+                    { label: 'Se déconnecter', icon: 'pi pi-fw pi-sign-out', command: () => this.logout() }
                 ]
             });
         }

@@ -1,0 +1,23 @@
+@{
+    Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="container-xl">
+    <div class="row">
+        <div class="col-12 col-md-3 mb-4">
+            <div class="identity-card p-3">
+                <h6 class="mb-3 px-2 font-bold text-secondary text-uppercase tracking-wider" style="font-size: 0.75rem;">Mon Compte</h6>
+                <partial name="_ManageNav" />
+            </div>
+        </div>
+        <div class="col-12 col-md-9">
+            <div class="identity-card">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

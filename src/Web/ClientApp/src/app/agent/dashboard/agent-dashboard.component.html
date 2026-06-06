@@ -1,43 +1,165 @@
 <div class="grid grid-cols-12 gap-6">
   <div class="col-span-12">
-    <div class="card">
-      <div class="flex flex-column gap-1 mb-4">
-        <h5 class="m-0">Dashboard agent</h5>
-        <p class="m-0 text-color-secondary">Tableau complet des demandes</p>
+    <div class="card agent-dashboard-shell">
+      <!-- Header Section -->
+      <div class="agent-dashboard-header">
+        <div>
+          <p class="agent-dashboard-eyebrow">IdaraTech • Agent</p>
+          <h5 class="m-0">Tableau de bord agent</h5>
+          <p class="m-0 text-color-secondary">Gestion et répartition des demandes du service</p>
+        </div>
+        <div class="flex flex-column align-items-end gap-2">
+          <p-tag [value]="session.isConnected() ? 'Session Active' : 'Déconnecté'" [severity]="session.isConnected() ? 'success' : 'danger'"></p-tag>
+          <button pButton type="button" icon="pi pi-file-pdf" label="Exporter Rapport Instantané" class="p-button-outlined p-button-danger p-button-sm mt-1" (click)="exportRapportInstantane()"></button>
+        </div>
       </div>
 
-      <p-message *ngIf="!session.isConnected()" severity="warn" text="Agent non connecté."></p-message>
+      <p-message *ngIf="!session.isConnected()" severity="warn" text="Agent non connecté. Veuillez vous connecter."></p-message>
       <p-message *ngIf="infoMessage" severity="info" [text]="infoMessage"></p-message>
       <p-message *ngIf="errorMessage" severity="error" [text]="errorMessage"></p-message>
 
       @if (!loading) {
-        <div class="grid grid-cols-12 gap-4 mt-2">
+        <!-- Metric Cards -->
+        <div class="grid grid-cols-12 gap-4 mt-3">
           <div class="col-span-12 md:col-span-6 xl:col-span-3">
-            <div class="surface-card border border-surface rounded-border p-4 flex justify-content-between align-items-center">
-              <span class="text-color-secondary">Demandes en attente</span>
-              <p-tag [value]="demandesEnAttente.toString()" severity="warn"></p-tag>
+            <div class="agent-metric-card agent-metric-card-primary">
+              <div class="agent-metric-icon"><i class="pi pi-inbox"></i></div>
+              <div>
+                <span class="agent-metric-label">Total Demandes</span>
+                <div class="agent-metric-value">{{ totalDemandes }}</div>
+              </div>
             </div>
           </div>
           <div class="col-span-12 md:col-span-6 xl:col-span-3">
-            <div class="surface-card border border-surface rounded-border p-4 flex justify-content-between align-items-center">
-              <span class="text-color-secondary">Demandes traitées</span>
-              <p-tag [value]="demandesTraitees.toString()" severity="success"></p-tag>
+            <div class="agent-metric-card agent-metric-card-warn">
+              <div class="agent-metric-icon"><i class="pi pi-clock"></i></div>
+              <div>
+                <span class="agent-metric-label">En attente</span>
+                <div class="agent-metric-value">{{ demandesEnAttente }}</div>
+              </div>
             </div>
           </div>
           <div class="col-span-12 md:col-span-6 xl:col-span-3">
-            <div class="surface-card border border-surface rounded-border p-4 flex justify-content-between align-items-center">
-              <span class="text-color-secondary">Total demandes</span>
-              <p-tag [value]="demandes.length.toString()" severity="info"></p-tag>
+            <div class="agent-metric-card agent-metric-card-info">
+              <div class="agent-metric-icon"><i class="pi pi-refresh"></i></div>
+              <div>
+                <span class="agent-metric-label">En cours</span>
+                <div class="agent-metric-value">{{ demandesEnCours }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-span-12 md:col-span-6 xl:col-span-3">
+            <div class="agent-metric-card agent-metric-card-success">
+              <div class="agent-metric-icon"><i class="pi pi-check-circle"></i></div>
+              <div>
+                <span class="agent-metric-label">Traitées</span>
+                <div class="agent-metric-value">{{ demandesTraitees }}</div>
+              </div>
             </div>
           </div>
         </div>
 
+        <!-- Charts / Progress Indicators Section -->
+        <div class="grid grid-cols-12 gap-4 mt-4">
+          <!-- Left: Répartition des demandes par statut -->
+          <div class="col-span-12 xl:col-span-6">
+            <div class="surface-card border border-surface rounded-border p-4 h-full">
+              <div class="flex justify-content-between align-items-center mb-4">
+                <div>
+                  <h6 class="m-0">Répartition par statut</h6>
+                  <p class="m-0 text-color-secondary text-sm">Avancement général des dossiers</p>
+                </div>
+                <p-tag [value]="totalDemandes.toString() + ' Demandes'" severity="info"></p-tag>
+              </div>
+
+              <div class="flex flex-column gap-4">
+                <div>
+                  <div class="flex justify-content-between mb-2">
+                    <span class="font-medium text-sm">En attente</span>
+                    <strong>{{ demandesEnAttente }} ({{ demandePendingRate }}%)</strong>
+                  </div>
+                  <p-progressBar [value]="demandePendingRate" [showValue]="false" class="h-2"></p-progressBar>
+                </div>
+
+                <div>
+                  <div class="flex justify-content-between mb-2">
+                    <span class="font-medium text-sm">En cours</span>
+                    <strong>{{ demandesEnCours }} ({{ demandeEnCoursRate }}%)</strong>
+                  </div>
+                  <p-progressBar [value]="demandeEnCoursRate" [showValue]="false" class="h-2"></p-progressBar>
+                </div>
+
+                <div>
+                  <div class="flex justify-content-between mb-2">
+                    <span class="font-medium text-sm">Traitées</span>
+                    <strong>{{ demandesTraitees }} ({{ demandeProcessedRate }}%)</strong>
+                  </div>
+                  <p-progressBar [value]="demandeProcessedRate" [showValue]="false" class="h-2"></p-progressBar>
+                </div>
+
+                <div>
+                  <div class="flex justify-content-between mb-2">
+                    <span class="font-medium text-sm">Refusées</span>
+                    <strong>{{ demandesRefusees }} ({{ demandeRefusedRate }}%)</strong>
+                  </div>
+                  <p-progressBar [value]="demandeRefusedRate" [showValue]="false" class="h-2"></p-progressBar>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Assignation des dossiers -->
+          <div class="col-span-12 xl:col-span-6">
+            <div class="surface-card border border-surface rounded-border p-4 h-full">
+              <div class="mb-4">
+                <h6 class="m-0">Assignations des dossiers</h6>
+                <p class="m-0 text-color-secondary text-sm">Charge de travail au sein du service</p>
+              </div>
+
+              @if (totalDemandes > 0) {
+                <div class="agent-entity-bars mt-4">
+                  <div class="agent-entity-bar-row">
+                    <span class="truncate text-sm font-medium">Assignées à moi</span>
+                    <div class="agent-entity-bar agent-entity-bar-moi">
+                      <span [style.width]="demandesAssigneesAMoiRate + '%'"></span>
+                    </div>
+                    <strong>{{ demandesAssigneesAMoi }} ({{ demandesAssigneesAMoiRate }}%)</strong>
+                  </div>
+
+                  <div class="agent-entity-bar-row">
+                    <span class="truncate text-sm font-medium">Non assignées</span>
+                    <div class="agent-entity-bar agent-entity-bar-non">
+                      <span [style.width]="demandesNonAssigneesRate + '%'"></span>
+                    </div>
+                    <strong>{{ demandesNonAssignees }} ({{ demandesNonAssigneesRate }}%)</strong>
+                  </div>
+
+                  <div class="agent-entity-bar-row">
+                    <span class="truncate text-sm font-medium">Autres agents</span>
+                    <div class="agent-entity-bar agent-entity-bar-autres">
+                      <span [style.width]="demandesAssigneesAutresRate + '%'"></span>
+                    </div>
+                    <strong>{{ demandesAssigneesAutres }} ({{ demandesAssigneesAutresRate }}%)</strong>
+                  </div>
+                </div>
+              } @else {
+                <div class="text-color-secondary text-sm py-5 text-center flex flex-column align-items-center justify-content-center h-full min-h-12">
+                  <i class="pi pi-server text-3xl mb-2 text-gray-300"></i>
+                  <span>Aucune demande enregistrée dans votre service</span>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Demandes Table -->
         <div class="surface-card border border-surface rounded-border p-4 mt-4">
           <div class="flex justify-content-between align-items-center mb-3">
             <div>
-              <h6 class="m-0">Liste des demandes</h6>
-              <p class="m-0 text-color-secondary text-sm">Chargée directement depuis /api/Demandes</p>
+              <h6 class="m-0">Liste des demandes de mon service</h6>
+              <p class="m-0 text-color-secondary text-sm">Vue détaillée et traitement</p>
             </div>
+            <a pButton routerLink="/agent/demandes" label="Traiter demandes" icon="pi pi-pencil" size="small" class="p-button-sm"></a>
           </div>
 
           <div class="overflow-auto">
@@ -47,24 +169,29 @@
                   <th class="py-3 border-bottom-1 border-surface">ID</th>
                   <th class="py-3 border-bottom-1 border-surface">Citoyen</th>
                   <th class="py-3 border-bottom-1 border-surface">Service</th>
-                  <th class="py-3 border-bottom-1 border-surface">Agent</th>
+                  <th class="py-3 border-bottom-1 border-surface">Agent Assigné</th>
                   <th class="py-3 border-bottom-1 border-surface">Statut</th>
                 </tr>
               </thead>
               <tbody>
                 @for (demande of demandes; track demande.id) {
-                  <tr>
-                    <td class="py-3 border-bottom-1 border-surface">#{{ demande.id }}</td>
+                  <tr class="hover:bg-gray-50/50 transition-colors duration-150">
+                    <td class="py-3 border-bottom-1 border-surface font-semibold text-gray-600">#{{ demande.id }}</td>
                     <td class="py-3 border-bottom-1 border-surface">{{ demande.citoyenNom }}</td>
-                    <td class="py-3 border-bottom-1 border-surface">{{ demande.serviceNom || '—' }}</td>
-                    <td class="py-3 border-bottom-1 border-surface">{{ demande.agentNom || '—' }}</td>
+                    <td class="py-3 border-bottom-1 border-surface">
+                      <span class="font-medium text-gray-800 text-sm">{{ demande.serviceNom || '—' }}</span>
+                    </td>
+                    <td class="py-3 border-bottom-1 border-surface text-sm text-color-secondary">{{ demande.agentNom || 'Non assigné' }}</td>
                     <td class="py-3 border-bottom-1 border-surface">
                       <p-tag [value]="demande.statutName" [severity]="statusSeverity(demande.statut)"></p-tag>
                     </td>
                   </tr>
                 } @empty {
                   <tr>
-                    <td colspan="5" class="py-4 text-center text-color-secondary">Aucune demande disponible.</td>
+                    <td colspan="5" class="py-5 text-center text-color-secondary">
+                      <i class="pi pi-folder-open text-3xl mb-2 text-gray-300 block"></i>
+                      Aucune demande disponible pour le moment.
+                    </td>
                   </tr>
                 }
               </tbody>
@@ -72,6 +199,7 @@
           </div>
         </div>
 
+        <!-- Chatbot Button -->
         <div class="flex flex-wrap gap-2 mt-4">
           <a pButton routerLink="/agent/chatbot" icon="pi pi-comments" label="Interagir avec le chatbot" severity="secondary"></a>
         </div>

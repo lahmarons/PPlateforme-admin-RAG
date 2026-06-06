@@ -22,7 +22,15 @@
         </ng-template>
         <ng-template pTemplate="body" let-prestataire>
           <tr>
-            <td>{{ prestataire.nom }}</td>
+            <td>
+              <div class="flex align-items-center gap-3">
+                <img *ngIf="prestataire.logo" [src]="'data:image/png;base64,' + prestataire.logo" class="w-10 h-10 object-cover rounded-full shadow-sm border border-surface-200" alt="Logo" />
+                <div *ngIf="!prestataire.logo" class="w-10 h-10 rounded-full bg-gray-100 flex align-items-center justify-content-center border border-surface-200">
+                  <i class="pi pi-building text-gray-400 text-sm"></i>
+                </div>
+                <span class="font-semibold">{{ prestataire.nom }}</span>
+              </div>
+            </td>
             <td>{{ prestataire.description }}</td>
             <td class="flex gap-2 justify-content-end">
               <button pButton type="button" icon="pi pi-pencil" label="Modifier" severity="secondary" (click)="openEdit(prestataire)"></button>
@@ -41,6 +49,21 @@
           <div class="col-span-12 flex flex-column gap-1">
             <label for="description">Description</label>
             <input id="description" pInputText formControlName="description" />
+          </div>
+          <div class="col-span-12 flex flex-column gap-2 mt-2">
+            <label>Logo / Image du prestataire</label>
+            <div class="flex align-items-center gap-3">
+              <div class="relative w-20 h-20 rounded border border-surface overflow-hidden flex align-items-center justify-content-center bg-gray-50">
+                <img *ngIf="logoBase64" [src]="'data:image/png;base64,' + logoBase64" class="w-full h-full object-cover" />
+                <i *ngIf="!logoBase64" class="pi pi-image text-gray-300 text-2xl"></i>
+                <button *ngIf="logoBase64" type="button" pButton icon="pi pi-trash" class="p-button-danger p-button-xs p-button-rounded absolute top-1 right-1 h-6 w-6 p-0 flex align-items-center justify-content-center" (click)="removeLogo()"></button>
+              </div>
+              <div>
+                <input #logoInput type="file" accept="image/*" class="hidden" (change)="onLogoSelected($event)" />
+                <button pButton type="button" icon="pi pi-upload" severity="secondary" label="Choisir une image" (click)="logoInput.click()"></button>
+                <p class="text-xs text-color-secondary mt-1">Format recommandé: PNG, JPG (Max. 1Mo)</p>
+              </div>
+            </div>
           </div>
           <div class="col-span-12 flex justify-content-end gap-2">
             <button pButton type="button" severity="secondary" label="Annuler" (click)="dialogVisible = false"></button>

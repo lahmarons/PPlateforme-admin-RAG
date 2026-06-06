@@ -1,0 +1,25 @@
+<app-floating-configurator />
+
+<div class="auth-page">
+  <div class="auth-card-shell">
+    <div class="auth-card-accent" style="border-color: var(--red-500, #ef4444); box-shadow: 0 20px 60px color-mix(in srgb, var(--red-500, #ef4444) 10%, transparent);"></div>
+    <div class="auth-card flex flex-column align-items-center text-center">
+      <div class="auth-brand">
+        <div class="auth-brand-icon" style="background: color-mix(in srgb, var(--red-500, #ef4444) 12%, transparent); color: var(--red-500, #ef4444); width: 4.5rem; height: 4.5rem; font-size: 1.75rem; border-radius: 999px; display: grid; place-items: center; margin: 0 auto 1.5rem;">
+          <i class="pi pi-shield"></i>
+        </div>
+        <h1 class="text-3xl font-bold mt-3 text-red-500">Accès Refusé</h1>
+        <p class="text-color-secondary mt-2">Permissions insuffisantes</p>
+      </div>
+
+      <div class="my-4 text-color-secondary max-w-sm mx-auto leading-relaxed">
+        Vous n'avez pas l'autorisation d'accéder à cette page. Veuillez vous connecter avec un compte approprié ou retourner au portail.
+      </div>
+
+      <div class="flex flex-wrap justify-content-center gap-3 mt-4 w-full">
+        <a pButton routerLink="/connexion" label="Se connecter" icon="pi pi-sign-in" class="p-button-danger w-full sm:w-auto"></a>
+        <a pButton routerLink="/" label="Retour à l'accueil" icon="pi pi-home" severity="secondary" class="w-full sm:w-auto"></a>
+      </div>
+    </div>
+  </div>
+</div>

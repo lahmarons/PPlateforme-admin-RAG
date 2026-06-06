@@ -6,5 +6,7 @@ public class Prestataire : BaseAuditableEntity
 
     public string Description { get; set; } = string.Empty;
 
+    public string? Logo { get; set; }
+
     public IList<Service> Services { get; private set; } = new List<Service>();
 }

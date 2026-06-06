@@ -22,6 +22,7 @@ export class AdminPrestatairesComponent implements OnInit {
   prestataires: PrestataireDto[] = [];
   dialogVisible = false;
   editing: PrestataireDto | null = null;
+  logoBase64: string | null = null;
 
   readonly form = this.fb.nonNullable.group({
     nom: ['', [Validators.required]],
@@ -48,6 +49,7 @@ export class AdminPrestatairesComponent implements OnInit {
 
   openCreate(): void {
     this.editing = null;
+    this.logoBase64 = null;
     this.form.reset({
       nom: '',
       description: ''
@@ -57,11 +59,41 @@ export class AdminPrestatairesComponent implements OnInit {
 
   openEdit(prestataire: PrestataireDto): void {
     this.editing = prestataire;
+    this.logoBase64 = prestataire.logo || null;
     this.form.reset({
       nom: prestataire.nom,
       description: prestataire.description
     });
     this.dialogVisible = true;
+  }
+
+  onLogoSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+
+    if (file.size > 1024 * 1024) {
+      alert("L'image est trop volumineuse (max 1Mo)");
+      input.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      const result = reader.result as string;
+      const base64Index = result.indexOf('base64,');
+      if (base64Index !== -1) {
+        this.logoBase64 = result.substring(base64Index + 7);
+      } else {
+        this.logoBase64 = result;
+      }
+    };
+    input.value = '';
+  }
+
+  removeLogo(): void {
+    this.logoBase64 = null;
   }
 
   save(): void {
@@ -76,7 +108,8 @@ export class AdminPrestatairesComponent implements OnInit {
       const command = new UpdatePrestataireCommand({
         id: this.editing.id,
         nom: value.nom,
-        description: value.description
+        description: value.description,
+        logo: this.logoBase64 || undefined
       });
 
       this.prestatairesClient.updatePrestataire(this.editing.id!, command).subscribe({
@@ -88,7 +121,8 @@ export class AdminPrestatairesComponent implements OnInit {
 
     const command = new CreatePrestataireCommand({
       nom: value.nom,
-      description: value.description
+      description: value.description,
+      logo: this.logoBase64 || undefined
     });
 
     this.prestatairesClient.createPrestataire(command).subscribe({

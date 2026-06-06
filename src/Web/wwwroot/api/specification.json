@@ -1755,6 +1755,10 @@
           },
           "description": {
             "type": "string"
+          },
+          "logo": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -1767,6 +1771,10 @@
           },
           "description": {
             "type": "string"
+          },
+          "logo": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -1783,6 +1791,10 @@
           },
           "description": {
             "type": "string"
+          },
+          "logo": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

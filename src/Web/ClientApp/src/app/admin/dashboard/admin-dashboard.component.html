@@ -188,8 +188,22 @@
                   <span class="text-color-secondary">Demandes en attente</span>
                   <strong>{{ demandesEnAttente }}</strong>
                 </div>
-              </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+        <!-- PDF Reports Section -->
+        <div class="surface-card border border-surface rounded-border p-4 mt-4">
+          <div class="mb-3">
+            <h6 class="m-0">Générer les rapports PDF</h6>
+            <p class="m-0 text-color-secondary text-sm">Sélectionnez le rapport administratif à exporter au format PDF</p>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <button pButton type="button" icon="pi pi-file-pdf" label="Rapport Général" class="p-button-raised" (click)="exportRapportGeneral()"></button>
+            <button pButton type="button" icon="pi pi-inbox" label="Rapport Demandes" class="p-button-raised p-button-success" (click)="exportRapportDemandes()"></button>
+            <button pButton type="button" icon="pi pi-users" label="Rapport Agents" class="p-button-raised p-button-info" (click)="exportRapportAgents()"></button>
+            <button pButton type="button" icon="pi pi-building" label="Rapport Prestataires" class="p-button-raised p-button-help" (click)="exportRapportPrestataires()"></button>
           </div>
         </div>
       }

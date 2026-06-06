@@ -32,7 +32,8 @@ public class GetPrestataireByIdQueryHandler : IRequestHandler<GetPrestataireById
         {
             Id = entity.Id,
             Nom = entity.Nom,
-            Description = entity.Description
+            Description = entity.Description,
+            Logo = entity.Logo
         };
     }
 }

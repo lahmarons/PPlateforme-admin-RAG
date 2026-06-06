@@ -21,28 +21,31 @@ import { AdminPrestatairesComponent } from './admin/prestataires/admin-prestatai
 import { PrestataireListComponent } from './prestataire/client/prestataire-list.component';
 import { AppLayout } from './layout/component/app.layout';
 import { ConnexionHubComponent } from './connexion/connexion.component';
+import { AuthErrorComponent } from './components/auth-error/auth-error.component';
+import { citoyenGuard, agentGuard, adminGuard } from './shared/guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'connexion', component: ConnexionHubComponent },
+  { path: 'auth/error', component: AuthErrorComponent },
   {
     path: '',
     component: AppLayout,
     children: [
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'citoyen/dashboard', component: DashboardComponent },
-      { path: 'citoyen/services', component: ServicesComponent },
-      { path: 'citoyen/demandes', component: MesDemandesComponent },
-      { path: 'citoyen/demandes/nouvelle', component: NouvelleDemandeComponent },
-      { path: 'citoyen/chatbot', component: ChatbotComponent },
-      { path: 'agent/dashboard', component: AgentDashboardComponent },
-      { path: 'agent/demandes', component: AgentDemandesComponent },
-      { path: 'agent/chatbot', component: AgentChatbotComponent },
-      { path: 'admin/dashboard', component: AdminDashboardComponent },
-      { path: 'admin/services', component: AdminServicesComponent },
-      { path: 'admin/agents', component: AdminAgentsComponent },
-      { path: 'admin/prestataires', component: AdminPrestatairesComponent },
+      { path: 'citoyen/dashboard', component: DashboardComponent, canActivate: [citoyenGuard] },
+      { path: 'citoyen/services', component: ServicesComponent, canActivate: [citoyenGuard] },
+      { path: 'citoyen/demandes', component: MesDemandesComponent, canActivate: [citoyenGuard] },
+      { path: 'citoyen/demandes/nouvelle', component: NouvelleDemandeComponent, canActivate: [citoyenGuard] },
+      { path: 'citoyen/chatbot', component: ChatbotComponent, canActivate: [citoyenGuard] },
+      { path: 'agent/dashboard', component: AgentDashboardComponent, canActivate: [agentGuard] },
+      { path: 'agent/demandes', component: AgentDemandesComponent, canActivate: [agentGuard] },
+      { path: 'agent/chatbot', component: AgentChatbotComponent, canActivate: [agentGuard] },
+      { path: 'admin/dashboard', component: AdminDashboardComponent, canActivate: [adminGuard] },
+      { path: 'admin/services', component: AdminServicesComponent, canActivate: [adminGuard] },
+      { path: 'admin/agents', component: AdminAgentsComponent, canActivate: [adminGuard] },
+      { path: 'admin/prestataires', component: AdminPrestatairesComponent, canActivate: [adminGuard] },
       { path: 'prestataires', component: PrestataireListComponent }
     ]
   },

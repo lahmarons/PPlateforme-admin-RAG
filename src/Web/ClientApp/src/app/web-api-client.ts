@@ -3509,6 +3509,7 @@ export class PrestataireDto implements IPrestataireDto {
     id?: number;
     nom?: string;
     description?: string;
+    logo?: string | undefined;
 
     constructor(data?: IPrestataireDto) {
         if (data) {
@@ -3524,6 +3525,7 @@ export class PrestataireDto implements IPrestataireDto {
             this.id = _data["id"];
             this.nom = _data["nom"];
             this.description = _data["description"];
+            this.logo = _data["logo"];
         }
     }
 
@@ -3539,6 +3541,7 @@ export class PrestataireDto implements IPrestataireDto {
         data["id"] = this.id;
         data["nom"] = this.nom;
         data["description"] = this.description;
+        data["logo"] = this.logo;
         return data;
     }
 }
@@ -3547,11 +3550,13 @@ export interface IPrestataireDto {
     id?: number;
     nom?: string;
     description?: string;
+    logo?: string | undefined;
 }
 
 export class CreatePrestataireCommand implements ICreatePrestataireCommand {
     nom?: string;
     description?: string;
+    logo?: string | undefined;
 
     constructor(data?: ICreatePrestataireCommand) {
         if (data) {
@@ -3566,6 +3571,7 @@ export class CreatePrestataireCommand implements ICreatePrestataireCommand {
         if (_data) {
             this.nom = _data["nom"];
             this.description = _data["description"];
+            this.logo = _data["logo"];
         }
     }
 
@@ -3580,6 +3586,7 @@ export class CreatePrestataireCommand implements ICreatePrestataireCommand {
         data = typeof data === 'object' ? data : {};
         data["nom"] = this.nom;
         data["description"] = this.description;
+        data["logo"] = this.logo;
         return data;
     }
 }
@@ -3587,12 +3594,14 @@ export class CreatePrestataireCommand implements ICreatePrestataireCommand {
 export interface ICreatePrestataireCommand {
     nom?: string;
     description?: string;
+    logo?: string | undefined;
 }
 
 export class UpdatePrestataireCommand implements IUpdatePrestataireCommand {
     id?: number;
     nom?: string;
     description?: string;
+    logo?: string | undefined;
 
     constructor(data?: IUpdatePrestataireCommand) {
         if (data) {
@@ -3608,6 +3617,7 @@ export class UpdatePrestataireCommand implements IUpdatePrestataireCommand {
             this.id = _data["id"];
             this.nom = _data["nom"];
             this.description = _data["description"];
+            this.logo = _data["logo"];
         }
     }
 
@@ -3623,6 +3633,7 @@ export class UpdatePrestataireCommand implements IUpdatePrestataireCommand {
         data["id"] = this.id;
         data["nom"] = this.nom;
         data["description"] = this.description;
+        data["logo"] = this.logo;
         return data;
     }
 }
@@ -3631,6 +3642,7 @@ export interface IUpdatePrestataireCommand {
     id?: number;
     nom?: string;
     description?: string;
+    logo?: string | undefined;
 }
 
 export class ServiceDto implements IServiceDto {

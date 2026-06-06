@@ -28,9 +28,15 @@
       @if (!loading && !errorMessage) {
         @for (item of prestataireServices; track item.prestataire.id) {
         <div class="mb-6">
-          <div class="mb-3 pb-3" style="border-bottom: 2px solid var(--surface-border);">
-            <h4 class="m-0">{{ item.prestataire.nom }}</h4>
-            <p class="m-0 text-color-secondary text-sm">{{ item.prestataire.description }}</p>
+          <div class="mb-3 pb-3 flex align-items-center gap-3" style="border-bottom: 2px solid var(--surface-border);">
+            <img *ngIf="item.prestataire.logo" [src]="'data:image/png;base64,' + item.prestataire.logo" class="w-14 h-14 object-cover rounded-full shadow border border-surface-200" alt="Logo" />
+            <div *ngIf="!item.prestataire.logo" class="w-14 h-14 rounded-full bg-gray-100 flex align-items-center justify-content-center border border-surface-200 flex-shrink-0">
+              <i [class]="item.prestataire.id === 0 ? 'pi pi-server text-gray-400 text-xl' : 'pi pi-building text-gray-400 text-xl'"></i>
+            </div>
+            <div>
+              <h4 class="m-0">{{ item.prestataire.nom }}</h4>
+              <p class="m-0 text-color-secondary text-sm">{{ item.prestataire.description }}</p>
+            </div>
           </div>
 
           <div class="grid grid-cols-12 gap-4">

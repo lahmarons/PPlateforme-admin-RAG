@@ -7,6 +7,7 @@ public record CreatePrestataireCommand : IRequest<int>
 {
     public string Nom { get; init; } = string.Empty;
     public string Description { get; init; } = string.Empty;
+    public string? Logo { get; init; }
 }
 
 public class CreatePrestataireCommandHandler : IRequestHandler<CreatePrestataireCommand, int>
@@ -23,7 +24,8 @@ public class CreatePrestataireCommandHandler : IRequestHandler<CreatePrestataire
         var entity = new Prestataire
         {
             Nom = request.Nom,
-            Description = request.Description
+            Description = request.Description,
+            Logo = request.Logo
         };
 
         _context.Prestataires.Add(entity);

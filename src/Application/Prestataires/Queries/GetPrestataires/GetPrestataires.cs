@@ -39,7 +39,8 @@ public class GetPrestatairesQueryHandler : IRequestHandler<GetPrestatairesQuery,
             {
                 Id = p.Id,
                 Nom = p.Nom,
-                Description = p.Description
+                Description = p.Description,
+                Logo = p.Logo
             })
             .ToListAsync(cancellationToken);
     }

@@ -21,11 +21,23 @@
       <div class="grid grid-cols-12 gap-4">
         @for (prestataire of prestataires; track prestataire.id) {
         <div class="col-span-12 md:col-span-6 xl:col-span-4">
-          <p-card>
-            <ng-template pTemplate="title">{{ prestataire.nom }}</ng-template>
-            <ng-template pTemplate="subtitle">{{ prestataire.description || 'Prestataire' }}</ng-template>
-            <div class="flex flex-column gap-2">
-              <span>{{ prestataire.description || 'Description non disponible.' }}</span>
+          <p-card styleClass="h-full flex flex-column overflow-hidden hover:shadow-lg transition-shadow duration-200">
+            <ng-template pTemplate="header">
+              <div class="h-36 bg-gray-100 flex align-items-center justify-content-center border-bottom border-surface-200 p-4 relative">
+                <img *ngIf="prestataire.logo" [src]="'data:image/png;base64,' + prestataire.logo" class="max-h-28 max-w-full object-contain" alt="Logo" />
+                <div *ngIf="!prestataire.logo" class="w-16 h-16 rounded-full bg-white flex align-items-center justify-content-center border border-surface-200">
+                  <i class="pi pi-building text-gray-400 text-3xl"></i>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="title">
+              <div class="font-bold text-xl">{{ prestataire.nom }}</div>
+            </ng-template>
+            <ng-template pTemplate="subtitle">
+              <span class="text-sm text-color-secondary">Prestataire de service</span>
+            </ng-template>
+            <div class="flex flex-column gap-2 mt-2">
+              <span class="text-color-secondary leading-relaxed">{{ prestataire.description || 'Description non disponible.' }}</span>
             </div>
           </p-card>
         </div>
