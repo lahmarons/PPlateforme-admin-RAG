@@ -28,8 +28,11 @@
         <a routerLink="/citoyen/services" class="landing-nav-link">Services</a>
         <a routerLink="/prestataires" class="landing-nav-link">Prestataires</a>
         <a routerLink="/citoyen/chatbot" class="landing-nav-link">Chatbot</a>
-        <button pButton type="button" icon="pi pi-sign-in" label="Se connecter"
-          class="p-button-rounded p-button-sm ml-2" (click)="scrollToRoleSelection()"></button>
+        <button pButton type="button" 
+          [icon]="isLoggedIn() ? 'pi pi-user' : 'pi pi-sign-in'" 
+          [label]="isLoggedIn() ? 'Mon Espace' : 'Se connecter'"
+          class="p-button-rounded p-button-sm ml-2" 
+          (click)="goToMySpace()"></button>
       </nav>
     </div>
   </header>

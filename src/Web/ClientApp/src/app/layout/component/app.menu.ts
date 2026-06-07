@@ -25,7 +25,7 @@ export class AppMenu implements OnInit {
 
     logout() {
         this.authService.logout().subscribe(() => {
-            this.router.navigate(['/connexion']);
+            this.router.navigate(['/']);
         });
     }
 

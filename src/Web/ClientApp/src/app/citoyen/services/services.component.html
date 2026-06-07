@@ -52,7 +52,9 @@
                 </div>
                 <div class="mt-auto flex flex-column gap-2">
                   <button pButton type="button" class="w-full" severity="secondary" icon="pi pi-info-circle" label="Plus d'informations" (click)="showDetails(service)"></button>
+                  @if (isLoggedIn()) {
                   <a pButton class="w-full" [routerLink]="['/citoyen/demandes/nouvelle']" [queryParams]="{ serviceId: service.id }" icon="pi pi-send" label="Créer une demande"></a>
+                  }
                 </div>
               </div>
             </div>
@@ -85,7 +87,9 @@
 
             <div class="flex justify-content-end gap-2">
               <button pButton type="button" severity="secondary" label="Fermer" (click)="closeDetails()"></button>
+              @if (isLoggedIn()) {
               <a pButton [routerLink]="['/citoyen/demandes/nouvelle']" [queryParams]="{ serviceId: selectedService.id }" icon="pi pi-send" label="Créer une demande"></a>
+              }
             </div>
           </div>
         }

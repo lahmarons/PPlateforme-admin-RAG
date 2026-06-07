@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
@@ -10,6 +10,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
 import { TagModule } from 'primeng/tag';
 import { ServicesClient, ServiceDto, PrestatairesClient, PrestataireDto } from '../../web-api-client';
+import { AuthService } from '../../shared/auth/auth.service';
 
 interface PrestataireWithServices {
   prestataire: PrestataireDto;
@@ -34,11 +35,22 @@ export class ServicesComponent implements OnInit {
 
   constructor(
     private readonly servicesClient: ServicesClient,
-    private readonly prestatairesClient: PrestatairesClient
+    private readonly prestatairesClient: PrestatairesClient,
+    private readonly authService: AuthService,
+    private readonly route: ActivatedRoute
   ) {}
 
+  isLoggedIn(): boolean {
+    return this.authService.currentUser() !== null;
+  }
+
   ngOnInit(): void {
-    this.loadServices();
+    this.route.queryParams.subscribe(params => {
+      if (params['q']) {
+        this.recherche = params['q'];
+      }
+      this.loadServices();
+    });
   }
 
   loadServices(): void {

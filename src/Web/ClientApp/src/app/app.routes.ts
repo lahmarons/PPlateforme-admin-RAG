@@ -33,7 +33,7 @@ export const routes: Routes = [
     children: [
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'citoyen/dashboard', component: DashboardComponent, canActivate: [citoyenGuard] },
-      { path: 'citoyen/services', component: ServicesComponent, canActivate: [citoyenGuard] },
+      { path: 'citoyen/services', component: ServicesComponent },
       { path: 'citoyen/demandes', component: MesDemandesComponent, canActivate: [citoyenGuard] },
       { path: 'citoyen/demandes/nouvelle', component: NouvelleDemandeComponent, canActivate: [citoyenGuard] },
       { path: 'citoyen/chatbot', component: ChatbotComponent, canActivate: [citoyenGuard] },

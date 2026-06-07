@@ -1,9 +1,10 @@
 // src/app/services/chat.service.ts  —  VERSION INTÉGRATION
 // Service Angular adapté pour s'intégrer dans n'importe quelle application
-import { Injectable } from '@angular/core';
+import { Injectable, effect } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { AuthService } from '../shared/auth/auth.service';
 
 export type Language = 'fr' | 'ar' | 'tn';
 
@@ -42,9 +43,30 @@ export class ChatService {
   public  isLoading$         = this.isLoadingSubject.asObservable();
 
   private counter = 0;
+  private lastUserId: string | null = null;
+  private isFirstRun = true;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService
+  ) {
     this.initializeChat('fr');
+
+    effect(() => {
+      const user = this.authService.currentUser();
+      const currentUserId = user ? user.userId : null;
+
+      if (this.isFirstRun) {
+        this.isFirstRun = false;
+        this.lastUserId = currentUserId;
+        return;
+      }
+
+      if (this.lastUserId !== currentUserId) {
+        this.clearMessages();
+      }
+      this.lastUserId = currentUserId;
+    }, { allowSignalWrites: true });
   }
 
   /**
