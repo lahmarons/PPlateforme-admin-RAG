@@ -16,15 +16,17 @@ class OllamaLLMService:
         self._available: Optional[bool] = None
 
     def is_available(self) -> bool:
-        if self._available is not None:
-            return self._available
+        if self._available is True:
+            return True
         try:
             with httpx.Client(timeout=3.0) as client:
                 resp = client.get(f"{self.base_url}/api/tags")
-                self._available = resp.status_code == 200
+                if resp.status_code == 200:
+                    self._available = True
+                    return True
         except Exception:
-            self._available = False
-        return self._available
+            pass
+        return False
 
     def list_models(self) -> List[str]:
         try:

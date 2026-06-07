@@ -21,40 +21,43 @@ Lieu d'inscription :
 
 Services offerts par l'ANETI :
 - Aide à la recherche d'emploi
-- Formation professionnelle
+- Formation professionnelle (Frais pris en charge)
 - Aide à la création d'entreprise
-- Programme Amal (allocation mensuelle de 200 dinars pour diplômés chômeurs)
+- Contrat Al Karama (insertion des diplômés du supérieur au chômage de longue durée)
 
-PROGRAMME AMAL :
+CONTRAT AL KARAMA :
 Conditions :
-- Être diplômé de l'enseignement supérieur
-- Être en situation de chômage depuis au moins 3 mois
-- Ne pas dépasser 35 ans
-Montant : 200 dinars par mois pendant 12 mois maximum
+- Titulaire d'un diplôme de l'enseignement supérieur
+- Chômeur inscrit à l'ANETI depuis au moins 2 ans
+Montant & Avantages :
+- Salaire mensuel minimum de 600 dinars net
+- Prise en charge par l'État de 400 dinars par mois pendant 2 ans
+- Prise en charge des cotisations CNSS et de la formation d'adaptation
 
 =============================================================
 2. CONTRAT DE TRAVAIL
 =============================================================
 
 TYPES DE CONTRATS EN TUNISIE :
-- CDI (Contrat à Durée Indéterminée) : contrat principal
-- CDD (Contrat à Durée Déterminée) : limité à 4 ans maximum
-- SIVP (Stage d'Initiation à la Vie Professionnelle) : pour les primo-demandeurs d'emploi
+- CDI (Contrat à Durée Indéterminée) : contrat permanent
+- CDD (Contrat à Durée Déterminée) : limité dans le temps (maximum 4 ans)
+- CIVP (Contrat d'Initiation à la Vie Professionnelle) : pour les primo-demandeurs d'emploi (remplace l'ancien SIVP depuis 2019)
 
-SIVP — Stage d'Initiation à la Vie Professionnelle :
+CIVP — Contrat d'Initiation à la Vie Professionnelle :
 Conditions :
-- Être diplômé de l'enseignement supérieur (bac+2 minimum)
-- Chercher son premier emploi
-- Avoir moins de 25 ans (ou 30 ans pour certains diplômés)
-Durée : 12 mois maximum
-Rémunération : au moins 1 SMIG
+- Diplômé de l'enseignement supérieur ou titulaire d'un BTP/BTS
+- Primo-demandeur d'emploi inscrit à l'ANETI
+Durée : 12 mois (renouvelable une fois pour 12 mois maximum)
+Rémunération & Indemnité :
+- Indemnité de l'État : 150 dinars/mois (diplômés du supérieur) ou 85 dinars/mois (autres niveaux)
+- Complément obligatoire versé par l'entreprise (généralement au moins 250 dinars pour les diplômés)
 
-Documents pour un SIVP :
-- CIN
-- Diplôme
-- CV
-- Fiche d'inscription à l'ANETI
-- Convention SIVP signée par l'employeur et l'ANETI
+Documents pour un CIVP :
+- CIN du candidat
+- Copie certifiée conforme du diplôme
+- CV à jour
+- Inscription active à l'ANETI
+- Formulaire de contrat CIVP rempli et signé par l'employeur et le candidat
 
 =============================================================
 3. CRÉATION D'ENTREPRISE

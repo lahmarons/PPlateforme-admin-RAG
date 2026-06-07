@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { InscriptionComponent } from './citoyen/inscription/inscription.component';
 import { ConnexionComponent } from './citoyen/connexion/connexion.component';
@@ -32,7 +31,6 @@ export const routes: Routes = [
     path: '',
     component: AppLayout,
     children: [
-      { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'citoyen/dashboard', component: DashboardComponent, canActivate: [citoyenGuard] },
       { path: 'citoyen/services', component: ServicesComponent, canActivate: [citoyenGuard] },

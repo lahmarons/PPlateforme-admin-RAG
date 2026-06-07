@@ -13,18 +13,17 @@ Documents requis :
 - Ancienne carte d'identité nationale
 - Acte de naissance récent (moins de 3 mois)
 - 2 photos d'identité récentes (fond blanc, 3.5x4.5 cm)
-- Timbre fiscal de 10 dinars tunisiens
+- Timbre fiscal de 3 dinars tunisiens (25 dinars en cas de perte ou de détérioration)
 
 Lieu de dépôt :
 - Bureau de police ou poste de garde nationale le plus proche du lieu de résidence
 - Unités régionales du Ministère de l'Intérieur
 
 Délai de traitement :
-- 15 jours ouvrables en moyenne
-- En cas d'urgence : procédure accélérée disponible (frais supplémentaires)
+- 10 à 15 jours ouvrables en moyenne
 
 Suivi de la demande :
-- Site officiel : www.cinc.tn
+- Site officiel : www.interieur.gov.tn
 - Numéro de téléphone : 71 333 000
 
 PREMIÈRE DEMANDE DE CIN (18 ans) :
@@ -32,7 +31,7 @@ Documents requis :
 - Acte de naissance original
 - Certificat de résidence (moins de 3 mois)
 - 2 photos d'identité
-- Timbre fiscal de 10 dinars
+- Timbre fiscal de 3 dinars
 
 =============================================================
 2. PASSEPORT TUNISIEN
@@ -45,24 +44,23 @@ Documents requis :
 - Carte d'identité nationale valide
 - 2 photos d'identité (fond blanc, normes biométriques)
 - Ancien passeport (si renouvellement)
-- Timbre fiscal : 90 dinars (passeport ordinaire)
-- Timbre fiscal : 160 dinars (passeport urgent — livraison 72h)
+- Timbre fiscal : 80 dinars (passeport ordinaire pour adultes)
+- Timbre fiscal : 25 dinars (élèves, étudiants, et enfants de moins de 6 ans)
+- Timbre fiscal : 150 dinars (en cas de perte ou détérioration du passeport précédent)
 
 Lieu de dépôt :
-- Bureau des passeports au Ministère de l'Intérieur
-- Délégations régionales du Ministère de l'Intérieur
+- Poste de police ou de garde nationale du lieu de résidence
+- Délégations régionales du Ministère de l'Intérieur ou consulat à l'étranger
 
 Délai de traitement :
-- Passeport ordinaire : 15 à 30 jours ouvrables
-- Passeport urgent : 72 heures (supplément de 70 dinars)
+- 10 à 20 jours ouvrables
 
 Validité :
-- Adulte : 7 ans
-- Mineur (moins de 18 ans) : 3 ans
+- Adulte et mineur : 5 ans (conforme aux normes biométriques de validité standard)
 
 Cas particuliers :
-- Mineurs : autorisation parentale obligatoire signée par les deux parents
-- Femmes mariées : acte de mariage requis
+- Mineurs : autorisation parentale signée par le tuteur légal (père ou mère)
+- Femmes mariées : acte de mariage requis si changement de nom patronymique souhaité
 
 =============================================================
 3. PERMIS DE CONDUIRE

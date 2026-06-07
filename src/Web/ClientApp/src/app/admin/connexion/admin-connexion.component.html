@@ -12,10 +12,6 @@
         <p>Accéder au dashboard admin</p>
       </div>
 
-      <div class="mb-3 text-sm text-muted-color">
-        Compte de test : <strong>administrator@localhost</strong> / <strong>Administrator1!</strong>
-      </div>
-
       <form class="auth-form" [formGroup]="form" (ngSubmit)="submit($event)" novalidate>
         <div class="field">
           <label for="email">Email</label>
@@ -24,12 +20,14 @@
 
         <div class="field">
           <label for="motDePasse">Mot de passe</label>
-          <p-password id="motDePasse" formControlName="motDePasse" [feedback]="false" [toggleMask]="true" placeholder="Password"></p-password>
+          <p-password id="motDePasse" formControlName="motDePasse" [feedback]="false" [toggleMask]="true"
+            placeholder="Password"></p-password>
         </div>
 
         <p-message *ngIf="errorMessage" severity="error" [text]="errorMessage"></p-message>
 
-        <button pButton type="submit" icon="pi pi-sign-in" label="Se connecter" class="auth-submit" [loading]="submitting"></button>
+        <button pButton type="submit" icon="pi pi-sign-in" label="Se connecter" class="auth-submit"
+          [loading]="submitting"></button>
 
         <a class="auth-link" routerLink="/connexion">Retour au choix d’espace</a>
       </form>

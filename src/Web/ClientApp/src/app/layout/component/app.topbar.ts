@@ -63,10 +63,6 @@ import { LayoutService } from '../service/layout.service';
                         <i class="pi pi-cloud"></i>
                         <span>Weather</span>
                     </a>
-                    <a class="layout-topbar-action" routerLink="/counter">
-                        <i class="pi pi-calculator"></i>
-                        <span>Counter</span>
-                    </a>
                     <a class="layout-topbar-action" href="/api" target="_blank" rel="noopener noreferrer">
                         <i class="pi pi-link"></i>
                         <span>API</span>
@@ -78,7 +74,23 @@ import { LayoutService } from '../service/layout.service';
                 </div>
             </div>
         </div>
-    </div>`
+    </div>`,
+    styles: [`
+        .layout-topbar-logo {
+            text-decoration: none !important;
+            font-weight: 700 !important;
+            color: var(--text-color) !important;
+            transition: color 0.15s ease;
+        }
+        .layout-topbar-logo span {
+            font-weight: 700 !important;
+            text-decoration: none !important;
+        }
+        .layout-topbar-logo:hover {
+            color: var(--primary-color) !important;
+            text-decoration: none !important;
+        }
+    `]
 })
 export class AppTopbar {
     items!: MenuItem[];
