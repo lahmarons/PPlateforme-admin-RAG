@@ -1,4 +1,4 @@
-<div class="chat-container">
+<div class="chat-container" *ngIf="isLoggedIn()">
   <!-- ══ BADGE FAB (fermé) ══════════════════════════════ -->
   <div *ngIf="!isOpen" class="chat-badge" (click)="toggleChat()">
     <img src="assets/assitant.png" alt="IDARATECH" class="badge-avatar" />

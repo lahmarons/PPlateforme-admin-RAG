@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChatService, Message } from '../../services/chat.service';
 import { LanguageService } from '../../services/language.service';
+import { AuthService } from '../../shared/auth/auth.service';
 import { ChatHeaderComponent } from './chat-header/chat-header.component';
 import { ChatMessagesComponent } from './chat-messages/chat-messages.component';
 import { ChatInputComponent } from './chat-input/chat-input.component';
@@ -27,8 +28,13 @@ export class ChatWidgetComponent implements OnInit {
 
   constructor(
     private chatService: ChatService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private authService: AuthService
   ) {}
+
+  isLoggedIn(): boolean {
+    return this.authService.currentUser() !== null;
+  }
 
   ngOnInit(): void {}
 

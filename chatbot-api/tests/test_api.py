@@ -223,6 +223,28 @@ class TestChatbotAPI(unittest.TestCase):
         self.assertIn("avg_response_time", data)
         self.assertIn("rag_usage_rate", data)
 
+    def test_chat_endpoint_validation_error(self):
+        """Vérifie qu'un message vide ou manquant génère une erreur 422"""
+        payload = {
+            "message": "",
+            "session_id": "test_session_empty",
+            "language": "fr",
+            "use_rag": True,
+            "history": []
+        }
+        response = self.client.post("/chat", json=payload)
+        self.assertEqual(response.status_code, 422)
+
+    def test_feedback_endpoint_validation_error(self):
+        """Vérifie qu'une note invalide (hors de [1, 5]) renvoie une erreur 422"""
+        payload = {
+            "session_id": "test_session_feedback",
+            "rating": 6,
+            "comment": "Super"
+        }
+        response = self.client.post("/feedback", json=payload)
+        self.assertEqual(response.status_code, 422)
+
 
 if __name__ == "__main__":
     unittest.main()
