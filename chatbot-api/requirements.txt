@@ -19,7 +19,7 @@ langchain==0.2.3                  # RAG orchestration
 langchain-community==0.2.3
 
 # === Document Processing ===
-pypdf==4.2.0                      # Lecture PDF
+pypdf==6.21.2                      # Lecture PDF
 python-docx==1.1.2                # Lecture DOCX
 
 # === Database ===
